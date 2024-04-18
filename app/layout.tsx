@@ -13,6 +13,20 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   title: "Swift Cart ",
   description: "Swift Cart is a one stop shop for all your shopping needs.",
+  icons: {
+    icon: [
+      {
+        media: "(prefers-color-scheme: light)",
+        url: "/images/favicon-black.jpg",
+        href: "/images/favicon-black.jpg"
+      },
+      {
+        media: "(prefers-color-scheme: dark)",
+        url: "/images/favicon-white.jpg",
+        href: "/images/favicon-white.jpg"
+      }
+    ]
+  }
 };
 
 export default function RootLayout({

@@ -69,16 +69,16 @@ export default function MainHeader() {
                 width={40}
                 height={56}
                 priority
-            />
-            <Image
+              />
+              <Image
                 src="/images/logo-white.png"
                 alt="The swift cart logo white"
                 className="hidden dark:block"
                 width={40}
                 height={56}
                 priority
-            />
-            <p className="text-xl font-semibold">Swift Cart</p>
+              />
+              <p className="text-xl font-semibold">Swift Cart</p>
             </Link>
             <Link
               href="#"
@@ -134,15 +134,19 @@ export default function MainHeader() {
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>My Account</DropdownMenuLabel>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>
-              <Link href="/admin">
+            <Link href="/admin">
+              <DropdownMenuItem>
                 Dashboard
-              </Link>
-            </DropdownMenuItem>
+              </DropdownMenuItem>
+            </Link>
             <DropdownMenuItem>Settings</DropdownMenuItem>
             <DropdownMenuItem>Support</DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>Logout</DropdownMenuItem>
+            <Link href="/login">
+              <DropdownMenuItem>
+                Login
+              </DropdownMenuItem>
+            </Link>
           </DropdownMenuContent>
         </DropdownMenu>
       </div>
