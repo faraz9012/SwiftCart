@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
+import { ThemeProvider } from "@/components/providers/theme-provider";
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -10,8 +11,8 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "eMarketplace",
-  description: "We’re adding new features on a regular basis to make your experience fast, and easy.",
+  title: "Swift Cart ",
+  description: "Swift Cart is a one stop shop for all your shopping needs.",
 };
 
 export default function RootLayout({
@@ -20,8 +21,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={`${poppins.className} antialiased`}>{children}</body>
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${poppins.className} antialiased`}>
+        <ThemeProvider 
+         attribute="class"
+         defaultTheme="system"
+         enableSystem
+         disableTransitionOnChange
+         storageKey="Swift-Cart ">
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   );
 }
