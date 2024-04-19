@@ -42,7 +42,7 @@ export default function RootLayout({
          defaultTheme="system"
          enableSystem
          disableTransitionOnChange
-         storageKey="Swift-Cart ">
+         storageKey="Swift-Cart">
           {children}
         </ThemeProvider>
       </body>
