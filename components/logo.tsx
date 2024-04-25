@@ -2,7 +2,7 @@ import Image from "next/image";
 
 export default function MainHeader() {
     return (
-        <div className="hidden md:flex">
+        <div className="md:flex">
             <Image
                 src="/images/logo-black.png"
                 alt="The swift cart logo black"
