@@ -38,10 +38,11 @@ export default function SideNavMobileLink() {
                         <nav className="grid gap-6 text-lg font-medium">
                             <Link
                                 href="/admin"
-                                className="group"
+                                className="group flex items-center gap-4 mt-2"
                             >
                                 <Logo />
                                 <span className="sr-only">Swift-Cart</span>
+                                <span className="mt-2">Swift Cart</span>
                             </Link>
                             {SIDEBAR_NAVIGATION.map((item) => (
                                 <Link
