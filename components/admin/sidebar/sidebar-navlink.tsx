@@ -33,7 +33,7 @@ export default function SideNavLink() {
                 <TooltipTrigger asChild>
                   <Link
                     href={item.route}
-                    className={`flex size-9 items-center justify-center rounded-full text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8 ${pathname === item.route ? "bg-black text-white dark:bg-slate-200 dark:text-gray-950" : ""}`}
+                    className={`flex size-9 items-center justify-center rounded-full text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8 ${pathname === item.route ? "bg-black hover:text-white text-white dark:bg-slate-200 dark:text-gray-950 dark:hover:text-gray-950" : ""}`}
                   >
                     {item.icon && <item.icon className="size-5" />}
                     <span className="sr-only">{item.icon && item.title}</span>
