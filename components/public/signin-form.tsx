@@ -53,7 +53,7 @@ export default function SignIn() {
                 </div>
 
                 <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4" autoComplete="on">
                         <div className="grid gap-4">
                             <div className="grid gap-2">
                                 <FormField
@@ -63,7 +63,7 @@ export default function SignIn() {
                                         <FormItem>
                                             <FormLabel>Email</FormLabel>
                                             <FormControl>
-                                                <Input type="email" placeholder="admin@yourstore.com" {...field} />
+                                                <Input type="email" placeholder="admin@yourstore.com" {...field} autoComplete="email" />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -71,28 +71,31 @@ export default function SignIn() {
                                 />
                             </div>
                             <div className="grid gap-2">
-                                    <Link
-                                        href="/forgot-password"
-                                        className="ml-auto inline-block text-sm underline"
-                                    >
-                                        Forgot your password?
-                                    </Link>
-
                                 <FormField
                                     control={form.control}
                                     name="password"
                                     render={({ field }) => (
                                         <FormItem>
-                                            <FormLabel>Password</FormLabel>
+                                            <FormLabel className="flex justify-between">
+                                                Password
+                                            </FormLabel>
                                             <FormControl>
-                                                <Input type="password" />
+                                                <Input type="password" {...field} autoComplete="password" />
                                             </FormControl>
                                             <FormMessage />
-                                            
                                         </FormItem>
-                                        
+
                                     )}
                                 />
+                            </div>
+                            <div className="md:flex md:justify-start md:items-center text-sm ">
+                            <span>Having trouble logging in?&nbsp;</span>
+                                <Link
+                                    href="/forgot-password"
+                                    className="underline"
+                                >
+                                    Forgot your password?
+                                </Link>
                             </div>
                             <Button type="submit" className="w-full">
                                 Login
@@ -100,6 +103,7 @@ export default function SignIn() {
                         </div>
                     </form>
                 </Form>
+
                 <div className="mt-4 text-center text-sm">
                     Don&apos;t have an account?{" "}
                     <Link href="#" className="underline">
