@@ -1,4 +1,4 @@
-import { getCategories } from "@/lib/SwiftCart";
+import { getCategories } from "@/lib/category";
 import { Category, columns } from './columns';
 import { DataTable } from "@/components/admin/data-table";
 

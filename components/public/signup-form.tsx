@@ -43,9 +43,9 @@ export default function SignUp() {
         <>
             <div className="mx-auto grid p-4 gap-6">
                 <div className="grid gap-2 text-center">
-                    <h1 className="text-3xl font-bold">Register</h1>
+                    <h1 className="text-3xl font-bold">Let’s create you an account</h1>
                     <p className="text-balance text-muted-foreground">
-                        Enter your email below to login to your account
+                        It'll just take a few seconds and you'll be all set
                     </p>
                 </div>
 
