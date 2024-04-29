@@ -1,11 +1,11 @@
-import SignIn from "@/components/public/signin-form";
+import SignUp from "@/components/public/signup-form";
 import Image from "next/image";
 
-export default function Login() {
+export default function Register() {
   return (
     <div className="w-full h-dvh lg:grid lg:min-h-[600px] lg:grid-cols-2 xl:min-h-[800px]">
       <div className="flex items-center justify-center py-12">
-        <SignIn />
+        <SignUp />
       </div>
       <div className="hidden bg-muted lg:block relative bg-black">
         <Image

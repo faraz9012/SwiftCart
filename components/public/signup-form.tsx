@@ -4,7 +4,6 @@ import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
     Form,
     FormControl,
@@ -28,7 +27,7 @@ const formSchema = z.object({
     }),
 })
 
-export default function SignIn() {
+export default function SignUp() {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
@@ -44,7 +43,7 @@ export default function SignIn() {
         <>
             <div className="mx-auto grid p-4 gap-6">
                 <div className="grid gap-2 text-center">
-                    <h1 className="text-3xl font-bold">Login</h1>
+                    <h1 className="text-3xl font-bold">Register</h1>
                     <p className="text-balance text-muted-foreground">
                         Enter your email below to login to your account
                     </p>
@@ -61,11 +60,8 @@ export default function SignIn() {
                                         <FormItem>
                                             <FormLabel>Email</FormLabel>
                                             <FormControl>
-                                                <Input type="email" placeholder="admin@yourstore.com" {...field} autoComplete="on" />
+                                                <Input type="email" placeholder="admin@yourstore.com" {...field} autoComplete="email" />
                                             </FormControl>
-                                            <FormDescription>
-                                                We'll never share your email with anyone else.
-                                            </FormDescription>
                                             <FormMessage />
                                         </FormItem>
                                     )}
@@ -81,7 +77,7 @@ export default function SignIn() {
                                                 Password
                                             </FormLabel>
                                             <FormControl>
-                                                <Input type="password" {...field} autoComplete="on" />
+                                                <Input type="password" {...field} autoComplete="password" />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>
@@ -90,7 +86,7 @@ export default function SignIn() {
                                 />
                             </div>
                             <div className="md:flex md:justify-start md:items-center text-sm ">
-                                <span>Having trouble logging in?&nbsp;</span>
+                            <span>Having trouble logging in?&nbsp;</span>
                                 <Link
                                     href="/forgot-password"
                                     className="underline"
@@ -106,9 +102,9 @@ export default function SignIn() {
                 </Form>
 
                 <div className="mt-4 text-center text-sm">
-                    Don&apos;t have an account?{" "}
-                    <Link href="/register" className="underline">
-                        Sign up
+                    Already have an account?{" "}
+                    <Link href="/login" className="underline">
+                        Sign in
                     </Link>
                 </div>
             </div>
