@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/theme-provider";
-
+import { Toaster, toast } from 'sonner';
 const poppins = Poppins({
   subsets: ['latin'],
   display: 'swap',
@@ -37,12 +37,13 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body className={`${poppins.className} antialiased`}>
-        <ThemeProvider 
-         attribute="class"
-         defaultTheme="system"
-         enableSystem
-         disableTransitionOnChange
-         storageKey="Swift-Cart">
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="light"
+          enableSystem
+          disableTransitionOnChange
+          storageKey="Swift-Cart">
+          <Toaster richColors position="top-center" />
           {children}
         </ThemeProvider>
       </body>

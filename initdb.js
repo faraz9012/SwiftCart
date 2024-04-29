@@ -9,7 +9,7 @@ const dummyCategories = [
       image: '/images/sample-images/electronics.webp',
       parentCategoryId: 0,
       published: 0,
-      createdOn: '2023-11-23 09:25:38.0000000',
+      createdOnUTC: '2023-11-23 09:25:38.0000000',
    },
    {
       name: 'Gaming consoles',
@@ -18,7 +18,7 @@ const dummyCategories = [
       image: '/images/sample-images/gaming-console.webp',
       parentCategoryId: 1,
       published: 0,
-      createdOn: '2023-11-23 09:25:38.0000000',
+      createdOnUTC: '2023-11-23 09:25:38.0000000',
    },
    {
       name: 'Cell phones',
@@ -27,7 +27,7 @@ const dummyCategories = [
       image: '/images/sample-images/cell-phone.webp',
       parentCategoryId: 1,
       published: 0,
-      createdOn: '2023-11-23 09:25:38.0000000',
+      createdOnUTC: '2023-11-23 09:25:38.0000000',
    },
    {
       name: 'Computers',
@@ -36,7 +36,7 @@ const dummyCategories = [
       image: '/images/sample-images/computer.webp',
       parentCategoryId: 0,
       published: 0,
-      createdOn: '2023-11-23 09:25:38.0000000',
+      createdOnUTC: '2023-11-23 09:25:38.0000000',
    },
    {
       name: 'Laptops',
@@ -45,7 +45,7 @@ const dummyCategories = [
       image: '/images/sample-images/laptops.webp',
       parentCategoryId: 4,
       published: 0,
-      createdOn: '2023-11-23 09:25:38.0000000',
+      createdOnUTC: '2023-11-23 09:25:38.0000000',
    },
    {
       name: 'Desktop',
@@ -54,7 +54,7 @@ const dummyCategories = [
       image: '/images/sample-images/desktop.webp',
       parentCategoryId: 4,
       published: 0,
-      createdOn: '2023-11-23 09:25:38.0000000',
+      createdOnUTC: '2023-11-23 09:25:38.0000000',
    }
 ];
 
@@ -65,7 +65,7 @@ const dummyCustomers = [
       email: `will.smith@swiftcart.com`,
       passwordHash: '0x5708D0BAD8F925D9E460940B2939F911AF13856A930210AA60D2A70B5EF202A60D947A081B8C2A7D431575A4C78974E10AD4AA3D4D41A38CB2D31901BDC9F265',
       isActive: 1,
-      createdOn: '2023-11-23 09:25:38.0000000',
+      createdOnUTC: '2023-11-23 09:25:38.0000000',
    },
    {
       firstName: 'Faraz',
@@ -73,34 +73,34 @@ const dummyCustomers = [
       email: `faraz.arif@paymytuition.com`,
       passwordHash: '0x5708D0BAD8F925D9E460940B2939F911AF13856A930210AA60D2A70B5EF202A60D947A081B8C2A7D431575A4C78974E10AD4AA3D4D41A38CB2D31901BDC9F265',
       isActive: 1,
-      createdOn: '2023-11-23 09:25:38.0000000',
+      createdOnUTC: '2023-11-23 09:25:38.0000000',
    }
 ]
 
 db.prepare(`
     CREATE TABLE IF NOT EXISTS Category (
-      id INTEGER PRIMARY KEY AUTOINCREMENT,
-      name TEXT NOT NULL,
-      slug TEXT NOT NULL UNIQUE,
-      description TEXT NOT NULL,
-      image TEXT NOT NULL,
-      parentCategoryId INT NOT NULL,
-      published BOOLEAN NOT NULL,
-      createdOn DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-      updatedOn DATETIME DEFAULT NULL
+      Id INTEGER PRIMARY KEY AUTOINCREMENT,
+      Name TEXT NOT NULL,
+      Slug TEXT NOT NULL UNIQUE,
+      Description TEXT NOT NULL,
+      Image TEXT NOT NULL,
+      ParentCategoryId INT NOT NULL,
+      Published BOOLEAN NOT NULL,
+      CreatedOnUTC DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      UpdatedOnUTC DATETIME DEFAULT NULL
    );
 `).run();
 
 async function initCategoryData() {
    const sql = `
   INSERT INTO Category (
-    name,
-    slug,
-    description,
-    image,
-    parentCategoryId,
-    published,
-    createdOn
+    Name,
+    Slug,
+    Description,
+    Image,
+    ParentCategoryId,
+    Published,
+    CreatedOnUTC
   )
   VALUES (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)  -- Use database function
 `;
@@ -122,26 +122,26 @@ async function initCategoryData() {
 
 db.prepare(`
 CREATE TABLE IF NOT EXISTS Customers (
-   id INTEGER PRIMARY KEY AUTOINCREMENT,
-   firstName TEXT NOT NULL,
-   lastName TEXT NOT NULL,
-   email TEXT NOT NULL,
-   passwordHash TEXT NOT NULL,
-   isActive BOOLEAN NOT NULL,
-   createdOn DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-   lastLoginOn DATETIME DEFAULT NULL
+   Id INTEGER PRIMARY KEY AUTOINCREMENT,
+   FirstName TEXT NOT NULL,
+   LastName TEXT NOT NULL,
+   Email TEXT NOT NULL UNIQUE,
+   PasswordHash TEXT NOT NULL,
+   IsActive BOOLEAN NOT NULL,
+   CreatedOnUTC DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+   LastLoginOnUTC DATETIME DEFAULT NULL
 );
 `).run();
 
 async function initCustomerData() {
    const sql = `
    INSERT INTO Customers (
-      firstName,
-      lastName,
-      email,
-      passwordHash,
-      isActive,
-      createdOn
+      FirstName,
+      LastName,
+      Email,
+      PasswordHash,
+      IsActive,
+      CreatedOnUTC
     )
     VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP)  -- Use database function
   `;

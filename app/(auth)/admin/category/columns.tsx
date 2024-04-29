@@ -14,17 +14,15 @@ import { Checkbox } from "@/components/ui/checkbox"
 
 import { ArrowUpDown, MoreHorizontal } from "lucide-react";
 
-// This type is used to define the shape of our data.
-// You can use a Zod schema here if you want.
 export type Category = {
   id: number
   name: string
-  description: string
-  image: string
+  description?: string
+  image?: string
   parentCategoryId: number
   published: number
   createdOn: string
-  updatedOn: string
+  updatedOn?: string
 }
 
 export const columns: ColumnDef<Category>[] = [
@@ -51,7 +49,7 @@ export const columns: ColumnDef<Category>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "name",
+    accessorKey: "Name",
     header: ({ column }) => {
       return (
         <Button
@@ -65,7 +63,7 @@ export const columns: ColumnDef<Category>[] = [
     },
   },
   {
-    accessorKey: "parentCategoryId",
+    accessorKey: "ParentCategoryId",
     header: ({ column }) => {
       return (
         <Button
@@ -78,13 +76,13 @@ export const columns: ColumnDef<Category>[] = [
       )
     },
     cell: ({ row }) => {
-      const id = parseFloat(row.getValue("parentCategoryId"));
+      const id = parseFloat(row.getValue("ParentCategoryId"));
  
       return <div className="font-medium">{id}</div>
     },
   },
   {
-    accessorKey: "published",
+    accessorKey: "Published",
     header: ({ column }) => {
       return (
         <Button
@@ -97,7 +95,7 @@ export const columns: ColumnDef<Category>[] = [
       )
     },
     cell: ({ row }) => {
-      const status = parseFloat(row.getValue("published"));
+      const status = parseFloat(row.getValue("Published"));
       const formattedStatus = (status == 1) ? "Published" : "Unpublished"; 
  
       return <div className="font-medium">{formattedStatus}</div>

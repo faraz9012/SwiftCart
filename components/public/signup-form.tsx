@@ -17,11 +17,22 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { Register } from "@/lib/auth-actions/auth-action";
+import { toast } from "sonner";
 
 const formSchema = z.object({
-    email: z.string().email({
-        message: "Not a valid email",
+    firstName: z.string().min(1, {
+        message: "First name is required."
     }),
+    lastName: z.string().min(1, {
+        message: "Last name is required."
+    }),
+    email: z.string().min(1, {
+        message: "email is required."
+    })
+        .email({
+            message: "Not a valid email",
+        }),
     password: z.string().min(1, {
         message: "Password is required."
     }),
@@ -31,13 +42,17 @@ export default function SignUp() {
     const form = useForm<z.infer<typeof formSchema>>({
         resolver: zodResolver(formSchema),
         defaultValues: {
+            firstName: "",
+            lastName: "",
             email: "",
             password: ""
         },
     })
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values)
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+        const response = await Register(values);
+        toast.error(response);
+
     }
     return (
         <>
@@ -52,6 +67,38 @@ export default function SignUp() {
                 <Form {...form}>
                     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4" autoComplete="on">
                         <div className="grid gap-4">
+                            <div className="grid lg:grid-cols-2 gap-2">
+                                <div className="grid gap-2">
+                                    <FormField
+                                        control={form.control}
+                                        name="firstName"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>First name</FormLabel>
+                                                <FormControl>
+                                                    <Input type="text" placeholder="John" {...field} autoComplete="firstName" />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                </div>
+                                <div className="grid gap-2">
+                                    <FormField
+                                        control={form.control}
+                                        name="lastName"
+                                        render={({ field }) => (
+                                            <FormItem>
+                                                <FormLabel>Last name</FormLabel>
+                                                <FormControl>
+                                                    <Input type="text" placeholder="Smith" {...field} autoComplete="lastName" />
+                                                </FormControl>
+                                                <FormMessage />
+                                            </FormItem>
+                                        )}
+                                    />
+                                </div>
+                            </div>
                             <div className="grid gap-2">
                                 <FormField
                                     control={form.control}
@@ -62,6 +109,9 @@ export default function SignUp() {
                                             <FormControl>
                                                 <Input type="email" placeholder="admin@yourstore.com" {...field} autoComplete="email" />
                                             </FormControl>
+                                            <FormDescription className="text-xs">
+                                                We'll never share your email with anyone else.
+                                            </FormDescription>
                                             <FormMessage />
                                         </FormItem>
                                     )}
@@ -85,23 +135,14 @@ export default function SignUp() {
                                     )}
                                 />
                             </div>
-                            <div className="md:flex md:justify-start md:items-center text-sm ">
-                            <span>Having trouble logging in?&nbsp;</span>
-                                <Link
-                                    href="/forgot-password"
-                                    className="underline"
-                                >
-                                    Forgot your password?
-                                </Link>
-                            </div>
                             <Button type="submit" className="w-full">
-                                Login
+                                Register
                             </Button>
                         </div>
                     </form>
                 </Form>
 
-                <div className="mt-4 text-center text-sm">
+                <div className="text-center text-sm">
                     Already have an account?{" "}
                     <Link href="/login" className="underline">
                         Sign in
