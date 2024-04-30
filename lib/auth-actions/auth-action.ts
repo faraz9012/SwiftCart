@@ -13,10 +13,13 @@ export async function Register({ firstName, lastName, email, password } : { firs
 
     try {
         createCustomer({ firstName, lastName, email, hashedPassword, customerCreatedTime });
+        return {success: true, message: "Registration successful!"}
     }
     catch (error:any) {
+        let errorMessage = "Uh-Oh! Something went wrong."
         if(error.code === 'SQLITE_CONSTRAINT_UNIQUE') {
-            return "It seems like an account with this email already exists.";
+            errorMessage = "It seems like an account with this email already exists.";
+            return {success: false, message: errorMessage}
         }
     }
     redirect("/");

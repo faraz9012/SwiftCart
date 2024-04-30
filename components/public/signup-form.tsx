@@ -51,8 +51,7 @@ export default function SignUp() {
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         const response = await Register(values);
-        toast.error(response);
-
+        (response.success) ? toast.success(response.message) : toast.error(response.message);
     }
     return (
         <>
