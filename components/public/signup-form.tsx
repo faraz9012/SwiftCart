@@ -1,6 +1,7 @@
 'use client';
 
 import Link from "next/link";
+import { useRouter } from 'next/navigation';
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -48,10 +49,20 @@ export default function SignUp() {
             password: ""
         },
     })
+    const router = useRouter();
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         const response = await Register(values);
-        (response.success) ? toast.success(response.message) : toast.error(response.message);
+        if(response) {
+            if (response.success) {
+                toast.success(response.message);
+                router.push("/");
+    
+            }
+            else {
+                toast.error(response?.message);
+            }
+        }
     }
     return (
         <>

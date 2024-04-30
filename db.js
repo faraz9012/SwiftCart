@@ -1,6 +1,7 @@
 const sql = require('better-sqlite3');
 const db = sql('SwiftCart.db');
 
+//#region Dummy data
 const dummyCategories = [
    {
       name: 'Electronics',
@@ -77,30 +78,62 @@ const dummyCustomers = [
    }
 ]
 
-db.prepare(`
-    CREATE TABLE IF NOT EXISTS Category (
-      Id INTEGER PRIMARY KEY AUTOINCREMENT,
-      Name TEXT NOT NULL,
-      Slug TEXT NOT NULL UNIQUE,
-      Description TEXT NOT NULL,
-      Image TEXT NOT NULL,
-      ParentCategoryId INT NOT NULL,
-      Published BOOLEAN NOT NULL,
-      CreatedOnUTC DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-      UpdatedOnUTC DATETIME DEFAULT NULL
-   );
-`).run();
+//#endregion
 
+//#region Create table
+
+// Category
+db.exec(`
+    CREATE TABLE IF NOT EXISTS category (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      name TEXT NOT NULL,
+      slug TEXT NOT NULL UNIQUE,
+      description TEXT NOT NULL,
+      image TEXT NOT NULL,
+      parentCategoryId INT NOT NULL,
+      published BOOLEAN NOT NULL,
+      createdOnUTC DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      updatedOnUTC DATETIME DEFAULT NULL
+   )`
+);
+
+// Customers
+db.exec(`
+   CREATE TABLE IF NOT EXISTS user (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      firstName TEXT NOT NULL,
+      lastName TEXT NOT NULL,
+      email TEXT NOT NULL UNIQUE,
+      passwordHash TEXT NOT NULL,
+      isActive BOOLEAN NOT NULL,
+      createdOnUTC DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+      lastLoginOnUTC DATETIME DEFAULT NULL
+   )`
+);
+
+// Sessions
+db.exec(`
+CREATE TABLE IF NOT EXISTS session (
+   id TEXT NOT NULL PRIMARY KEY,
+   expires_at INTEGER NOT NULL,
+   user_id TEXT NOT NULL,
+   FOREIGN KEY (user_id) REFERENCES user(Id)
+ )`
+);
+
+//#endregion
+
+//#region (Method) Populate table with dummy data
 async function initCategoryData() {
    const sql = `
-  INSERT INTO Category (
-    Name,
-    Slug,
-    Description,
-    Image,
-    ParentCategoryId,
-    Published,
-    CreatedOnUTC
+  INSERT INTO category (
+    name,
+    slug,
+    description,
+    image,
+    parentCategoryId,
+    published,
+    createdOnUTC
   )
   VALUES (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)  -- Use database function
 `;
@@ -120,28 +153,15 @@ async function initCategoryData() {
    }
 }
 
-db.prepare(`
-CREATE TABLE IF NOT EXISTS Customers (
-   Id INTEGER PRIMARY KEY AUTOINCREMENT,
-   FirstName TEXT NOT NULL,
-   LastName TEXT NOT NULL,
-   Email TEXT NOT NULL UNIQUE,
-   PasswordHash TEXT NOT NULL,
-   IsActive BOOLEAN NOT NULL,
-   CreatedOnUTC DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-   LastLoginOnUTC DATETIME DEFAULT NULL
-);
-`).run();
-
 async function initCustomerData() {
    const sql = `
-   INSERT INTO Customers (
-      FirstName,
-      LastName,
-      Email,
-      PasswordHash,
-      IsActive,
-      CreatedOnUTC
+   INSERT INTO user (
+      firstName,
+      lastName,
+      email,
+      passwordHash,
+      isActive,
+      createdOnUTC
     )
     VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP)  -- Use database function
   `;
@@ -159,6 +179,10 @@ async function initCustomerData() {
       await stmt.run(data);
    }
 }
+//#endregion
+
+//#region Initate method to populate table
 
 initCategoryData();
 initCustomerData();
+//#endregion

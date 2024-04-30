@@ -49,7 +49,7 @@ export const columns: ColumnDef<Category>[] = [
     enableHiding: false,
   },
   {
-    accessorKey: "Name",
+    accessorKey: "name",
     header: ({ column }) => {
       return (
         <Button
@@ -63,7 +63,7 @@ export const columns: ColumnDef<Category>[] = [
     },
   },
   {
-    accessorKey: "ParentCategoryId",
+    accessorKey: "parentCategoryId",
     header: ({ column }) => {
       return (
         <Button
@@ -76,13 +76,13 @@ export const columns: ColumnDef<Category>[] = [
       )
     },
     cell: ({ row }) => {
-      const id = parseFloat(row.getValue("ParentCategoryId"));
+      const id = parseFloat(row.getValue("parentCategoryId"));
  
       return <div className="font-medium">{id}</div>
     },
   },
   {
-    accessorKey: "Published",
+    accessorKey: "published",
     header: ({ column }) => {
       return (
         <Button
@@ -95,7 +95,7 @@ export const columns: ColumnDef<Category>[] = [
       )
     },
     cell: ({ row }) => {
-      const status = parseFloat(row.getValue("Published"));
+      const status = parseFloat(row.getValue("published"));
       const formattedStatus = (status == 1) ? "Published" : "Unpublished"; 
  
       return <div className="font-medium">{formattedStatus}</div>
