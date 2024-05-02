@@ -74,19 +74,19 @@ const dummyUsers = [
 const UserRoles = [
    {
       name: "Super Administrators",
-      systemName:"SuperAdmin"
+      systemName: "SuperAdmin"
    },
    {
       name: "Administrators",
-      systemName:"Admin"
+      systemName: "Admin"
    },
    {
       name: "Registered",
-      systemName:"Registered"
+      systemName: "Registered"
    },
    {
       name: "Guests",
-      systemName:"Guests"
+      systemName: "Guests"
    }
 ]
 
@@ -96,6 +96,49 @@ const UserRoleMapping = [
       userRoleId: 1
    },
 ]
+
+const PermissionRecord = [
+   {
+      name: "Access admin area",
+      systemName: "AccessAdminPanel",
+      category: "Standard"
+   },
+   {
+      name: "Admin area. Manage Products",
+      systemName: "ManageProducts",
+      category: "Catalog"
+   },
+   {
+      name: "Admin area. Manage Categories",
+      systemName: "ManageCategories",
+      category: "Catalog"
+   },
+   {
+      name: "Admin area. Manage Orders",
+      systemName: "ManageOrders",
+      category: "Orders"
+   },
+]
+
+const PermissionRecordMapping = [
+   {
+      permissionRecordId: 1,
+      userRoleId: 1
+   },
+   {
+      permissionRecordId: 2,
+      userRoleId: 1
+   },
+   {
+      permissionRecordId: 3,
+      userRoleId: 1
+   },
+   {
+      permissionRecordId: 4,
+      userRoleId: 1
+   },
+]
+
 //#endregion
 
 //#region Create table
@@ -160,6 +203,26 @@ CREATE TABLE IF NOT EXISTS UserRoleMapping (
  );`
 );
 
+// Permission Records
+db.exec(`
+CREATE TABLE IF NOT EXISTS PermissionRecord (
+   id INTEGER PRIMARY KEY AUTOINCREMENT,
+   name TEXT NOT NULL,
+   systemName TEXT NOT NULL UNIQUE,
+   category TEXT NOT NULL
+ );`
+);
+
+// Permission Records Mapping
+db.exec(`
+CREATE TABLE IF NOT EXISTS PermissionRecordMapping (
+   id INTEGER PRIMARY KEY AUTOINCREMENT,
+   permission_id INTEGER NOT NULL,
+   role_id INTEGER NOT NULL,
+   FOREIGN KEY (permission_id) REFERENCES PermissionRecord(Id),
+   FOREIGN KEY (role_id) REFERENCES UserRole(Id)
+ );`
+);
 //#endregion
 
 //#region (Method) Populate table with dummy data
@@ -249,6 +312,39 @@ async function initUserRoleMappingData() {
       await stmt.run(data);
    }
 }
+
+async function initPermissionRecordData() {
+   const sql = `
+   INSERT INTO PermissionRecord (name, systemName, category)
+   VALUES (?, ?, ?)
+   `;
+
+   const stmt = db.prepare(sql);
+
+   for (const pr of PermissionRecord) {
+      const data = [
+         pr.name,
+         pr.systemName,
+         pr.category
+      ];
+      await stmt.run(data);
+   }
+}
+
+async function initPermissionRecordMappingData() {
+   const sql = `
+   INSERT INTO PermissionRecordMapping (permission_id, role_id)
+   VALUES (?, ?)
+   `;
+
+   const stmt = db.prepare(sql);
+
+   for (const prm of PermissionRecordMapping) {
+      const data = [prm.permissionRecordId, prm.userRoleId];
+      await stmt.run(data);
+   }
+}
+
 //#endregion
 
 //#region Initate method to populate table
@@ -257,5 +353,6 @@ initCategoryData();
 initUserData();
 initUserRoleData();
 initUserRoleMappingData();
-
+initPermissionRecordData();
+initPermissionRecordMappingData();
 //#endregion
