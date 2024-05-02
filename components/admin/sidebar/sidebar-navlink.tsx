@@ -11,7 +11,7 @@ import {
     TooltipProvider,
   } from "@/components/ui/tooltip";
 
-import { SIDEBAR_NAVIGATION } from "../constants/sidebar-navigation";
+import { SIDEBAR_NAVIGATION } from "../../constants/sidebar-navigation";
 import Logo from "@/components/logo";
   
 export default function SideNavLink() {

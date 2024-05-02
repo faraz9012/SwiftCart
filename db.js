@@ -64,19 +64,41 @@ const dummyUsers = [
       firstName: 'Faraz',
       lastName: 'Arif',
       email: `faraz.arif@paymytuition.com`,
+      role: "Super Administrators",
       passwordHash: '877e1b1eb3d32f69cbc014f51a7f623d777b03cc0983df0ab3d5daa1534f26761e6c0812f43a5ad458e9f401d9c13c7864ecef647b98af62928e0090101b4c4f:f263035d67a3f2831f285dbf5fe05bac',
       isActive: 1,
       createdOnUTC: '2023-11-23 09:25:38.0000000',
    }
 ]
 
+const UserRoles = [
+   {
+      name: "Super Administrators"
+   },
+   {
+      name: "Administrators",
+   },
+   {
+      name: "Registered",
+   },
+   {
+      name: "Guests",
+   }
+]
+
+const UserRoleMapping = [
+   {
+      userId: 1,
+      userRoleId: 1
+   },
+]
 //#endregion
 
 //#region Create table
 
 // Category
 db.exec(`
-    CREATE TABLE IF NOT EXISTS category (
+    CREATE TABLE IF NOT EXISTS Category (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       name TEXT NOT NULL,
       slug TEXT NOT NULL UNIQUE,
@@ -89,15 +111,15 @@ db.exec(`
    )`
 );
 
-// Customers
+// Users
 db.exec(`
-   CREATE TABLE IF NOT EXISTS user (
+   CREATE TABLE IF NOT EXISTS User (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
       firstName TEXT NOT NULL,
       lastName TEXT NOT NULL,
       email TEXT NOT NULL UNIQUE,
       passwordHash TEXT NOT NULL,
-      isActive BOOLEAN NOT NULL,
+      isActive BOOLEAN NOT NULL,    
       createdOnUTC DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
       lastLoginOnUTC DATETIME DEFAULT NULL
    )`
@@ -105,12 +127,31 @@ db.exec(`
 
 // Sessions
 db.exec(`
-CREATE TABLE IF NOT EXISTS session (
+CREATE TABLE IF NOT EXISTS Session (
    id TEXT NOT NULL PRIMARY KEY,
    expires_at INTEGER NOT NULL,
    user_id TEXT NOT NULL,
-   FOREIGN KEY (user_id) REFERENCES user(Id)
+   FOREIGN KEY (user_id) REFERENCES User(Id)
  )`
+);
+
+// User Roles
+db.exec(`
+CREATE TABLE IF NOT EXISTS UserRole (
+   id INTEGER PRIMARY KEY AUTOINCREMENT,
+   name TEXT NOT NULL
+ )`
+);
+
+// User Role Mapping
+db.exec(`
+CREATE TABLE IF NOT EXISTS UserRoleMapping (
+   id INTEGER PRIMARY KEY AUTOINCREMENT,
+   user_id INTEGER NOT NULL,
+   role_id INTEGER NOT NULL,
+   FOREIGN KEY (user_id) REFERENCES User(Id),
+   FOREIGN KEY (role_id) REFERENCES UserRole(Id)
+ );`
 );
 
 //#endregion
@@ -118,7 +159,7 @@ CREATE TABLE IF NOT EXISTS session (
 //#region (Method) Populate table with dummy data
 async function initCategoryData() {
    const sql = `
-  INSERT INTO category (
+  INSERT INTO Category (
     name,
     slug,
     description,
@@ -147,7 +188,7 @@ async function initCategoryData() {
 
 async function initUserData() {
    const sql = `
-   INSERT INTO user (
+   INSERT INTO User (
       firstName,
       lastName,
       email,
@@ -171,10 +212,41 @@ async function initUserData() {
       await stmt.run(data);
    }
 }
+
+async function initUserRoleData() {
+   const sql = `
+      INSERT INTO UserRole (name)
+      VALUES (?)  -- Use database function
+   `;
+
+   const stmt = db.prepare(sql);
+
+   for (const userRole of UserRoles) {
+      const data = [userRole.name];
+      await stmt.run(data);
+   }
+}
+
+async function initUserRoleMappingData() {
+   const sql = `
+   INSERT INTO UserRoleMapping (user_id, role_id)
+   VALUES (?, ?)
+   `;
+
+   const stmt = db.prepare(sql);
+
+   for (const rm of UserRoleMapping) {
+      const data = [rm.userId, rm.userRoleId];
+      await stmt.run(data);
+   }
+}
 //#endregion
 
 //#region Initate method to populate table
 
 initCategoryData();
 initUserData();
+initUserRoleData();
+initUserRoleMappingData();
+
 //#endregion

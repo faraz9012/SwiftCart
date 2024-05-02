@@ -4,20 +4,12 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useMediaQuery } from "@uidotdev/usehooks";
 
-import {
-    Home,
-    LineChart,
-    Package,
-    Package2,
-    PanelLeft,
-    ShoppingCart,
-    Users2,
-} from "lucide-react";
+import { PanelLeft } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
-import { SIDEBAR_NAVIGATION } from "../constants/sidebar-navigation";
+import { SIDEBAR_NAVIGATION } from "../../constants/sidebar-navigation";
 import Logo from "@/components/logo";
 
 export default function SideNavMobileLink() {

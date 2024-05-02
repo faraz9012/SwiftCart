@@ -13,7 +13,6 @@ export async function Register({ firstName, lastName, email, password } : { firs
     try {
         const customer = createUser({ firstName, lastName, email, hashedPassword, customerCreatedTime });
         await createAuthSession(customer);
-        console.log("Session created");
         return {success: true, message: "Registration successful!"}
     }
     catch (error:any) {
