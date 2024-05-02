@@ -1,9 +1,9 @@
 'use server';
 
-import { createUser, getUserByEmail } from "../user";
+import { createUser, getPermissionsByUserId, getUserByEmail } from "../user";
 import { hashUserPassword, verifyPassword } from "./hash";
 import { getUTCDateTime } from "../common-methods";
-import { createAuthSession, destroySession } from "./auth";
+import { createAuthSession, destroySession, verifyAuth } from "./auth";
 
 export async function Register({ firstName, lastName, email, password }: { firstName: string, lastName: string, email: string, password: string }) {
 
@@ -57,4 +57,11 @@ export async function LogoutUser() {
         return { success: false, message: errorMessage }
     }
 
+}
+
+export async function checkUserPermissions() {
+    const userId:any = (await verifyAuth())?.user?.id;
+
+    const permissions = await getPermissionsByUserId(userId)
+    console.log(permissions);
 }

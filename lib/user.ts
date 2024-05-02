@@ -13,3 +13,15 @@ export function createUser({ firstName, lastName, email, hashedPassword, custome
 export function getUserByEmail(email: string) {
     return db.prepare('SELECT * FROM User WHERE email = ?').get(email)
 }
+
+export function getPermissionsByUserId(id: number | bigint) {
+    return db.prepare(`
+    SELECT p.name, p.systemName, p.category
+    FROM PermissionRecord p
+    INNER JOIN PermissionRecordMapping rpm ON p.id = rpm.permission_id
+    INNER JOIN UserRoleMapping urm ON rpm.role_id = urm.role_id
+    INNER JOIN User u ON urm.user_id = u.id
+    WHERE u.id = ?;
+
+    `).get(id)
+}
