@@ -1,4 +1,4 @@
-import Link from "next/link"
+import Link from "next/link";
 import {
   ArrowUpRight,
   CreditCard,
@@ -6,15 +6,16 @@ import {
   RotateCcw,
   Users,
 } from "lucide-react"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
+
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
   CardDescription,
   CardHeader,
   CardTitle,
-} from "@/components/ui/card"
+} from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -22,10 +23,10 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "@/components/ui/table"
+} from "@/components/ui/table";
 
 
-export default async function Dashboard() {
+export default async function DashboardPage() {
 
   return (
     <div className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
@@ -99,7 +100,7 @@ export default async function Dashboard() {
                 </CardDescription>
               </div>
               <Button asChild size="sm" className="ml-auto gap-1">
-                <Link href="#">
+                <Link href="/admin">
                   View All
                   <ArrowUpRight className="h-4 w-4" />
                 </Link>

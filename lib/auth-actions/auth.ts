@@ -11,7 +11,6 @@ const adapter = new BetterSqlite3Adapter(db, {
     session: "Session"
 });
 
-
 export const lucia = new Lucia(adapter, {
     sessionCookie: {
         expires: false,
@@ -76,4 +75,19 @@ export async function verifyAuth() {
     } catch { }
 
     return result;
+}
+
+export async function destroySession() {
+    const { session } = await verifyAuth();
+
+    if (!session) return "Unauthorized!";
+
+    await lucia.invalidateSession(session.id);
+
+    const sessionCookie = lucia.createBlankSessionCookie();
+    cookies().set(
+        sessionCookie.name,
+        sessionCookie.value,
+        sessionCookie.attributes
+    );
 }

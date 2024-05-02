@@ -8,15 +8,14 @@ export default async function AuthRootLayout({
     children: React.ReactNode;
   }>) {
     const isAuthenticated = await verifyAuth();
-    console.log(isAuthenticated);
     if (!isAuthenticated.user && !isAuthenticated.session) {
       redirect("/");
     }
     return (
-      <div>
+      <>
         <Sidebar>
           {children}
         </Sidebar>
-      </div>
+      </>
     );
   }

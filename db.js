@@ -73,16 +73,20 @@ const dummyUsers = [
 
 const UserRoles = [
    {
-      name: "Super Administrators"
+      name: "Super Administrators",
+      systemName:"SuperAdmin"
    },
    {
       name: "Administrators",
+      systemName:"Admin"
    },
    {
       name: "Registered",
+      systemName:"Registered"
    },
    {
       name: "Guests",
+      systemName:"Guests"
    }
 ]
 
@@ -139,8 +143,10 @@ CREATE TABLE IF NOT EXISTS Session (
 db.exec(`
 CREATE TABLE IF NOT EXISTS UserRole (
    id INTEGER PRIMARY KEY AUTOINCREMENT,
-   name TEXT NOT NULL
- )`
+   name TEXT NOT NULL,
+   systemName TEXT NOT NULL UNIQUE
+ );
+`
 );
 
 // User Role Mapping
@@ -215,14 +221,17 @@ async function initUserData() {
 
 async function initUserRoleData() {
    const sql = `
-      INSERT INTO UserRole (name)
-      VALUES (?)  -- Use database function
-   `;
+    INSERT INTO UserRole (name, systemName)
+    VALUES (?, ?)  -- Use database function
+  `;
 
    const stmt = db.prepare(sql);
 
    for (const userRole of UserRoles) {
-      const data = [userRole.name];
+      const data = [
+         userRole.name,
+         userRole.systemName
+      ];
       await stmt.run(data);
    }
 }

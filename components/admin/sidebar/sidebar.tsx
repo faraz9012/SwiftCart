@@ -1,20 +1,14 @@
 "use client";
-import Image from "next/image"
-import Link from "next/link"
 
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from 'next/navigation';
 import {
-  Home,
-  LineChart,
-  Package,
-  Package2,
-  PanelLeft,
   Search,
   Settings,
-  ShoppingCart,
-  Users2,
-} from "lucide-react"
+} from "lucide-react";
 
-import { Button } from "@/components/ui/button"
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -22,21 +16,36 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-import { Input } from "@/components/ui/input"
+} from "@/components/ui/dropdown-menu";
+import { Input } from "@/components/ui/input";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
   TooltipProvider,
-} from "@/components/ui/tooltip"
-import DynamicBreadcrumb from "../dynamic-breadcrumb"
-import { usePathname } from "next/navigation"
+} from "@/components/ui/tooltip";
+import DynamicBreadcrumb from "../dynamic-breadcrumb";
+import { usePathname } from "next/navigation";
 import SideNavLink from "./sidebar-navlink";
 import SideNavMobileLink from "./sidebar-mobile-navigation";
+import { LogoutUser } from "@/lib/auth-actions/auth-action";
+import { toast } from "sonner";
 
 export default function Sidebar({children}: {children: React.ReactNode}) {
     const pathname = usePathname();
+    const router = useRouter();
+
+    async function signOut() {
+      const response = await LogoutUser();
+      if (response.success) {
+        toast.success(response.message);
+        router.push("/");
+
+    }
+    else {
+        toast.error(response?.message || "Login failed.");
+    }
+    }
   return (
     <div className="flex min-h-screen w-full flex-col">
       <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex">
@@ -98,7 +107,7 @@ export default function Sidebar({children}: {children: React.ReactNode}) {
               <DropdownMenuItem>Support</DropdownMenuItem>
               <DropdownMenuSeparator />
               <Link href="/">
-                <DropdownMenuItem>Logout</DropdownMenuItem>
+                <DropdownMenuItem onClick={signOut}>Logout</DropdownMenuItem>
               </Link>
             </DropdownMenuContent>
           </DropdownMenu>
