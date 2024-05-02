@@ -24,15 +24,8 @@ import {
   TableRow,
 } from "@/components/ui/table"
 
-import { verifyAuth } from "@/lib/auth-actions/auth";
-import { redirect } from "next/navigation";
 
 export default async function Dashboard() {
-  const isAuthenticated = await verifyAuth();
-  console.log(isAuthenticated);
-  if (!isAuthenticated.user && !isAuthenticated.session) {
-    redirect("/");
-  }
 
   return (
     <div className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
