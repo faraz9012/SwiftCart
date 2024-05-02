@@ -1,7 +1,7 @@
 import SignIn from "@/components/public/signin-form";
 import Image from "next/image";
 
-export default function Login() {
+export default function LoginPage() {
   return (
     <div className="w-full h-dvh lg:grid lg:grid-cols-2">
       <div className="flex items-center justify-center py-12">

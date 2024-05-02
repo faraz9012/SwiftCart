@@ -59,20 +59,12 @@ const dummyCategories = [
    }
 ];
 
-const dummyCustomers = [
-   {
-      firstName: 'Will',
-      lastName: 'Smith',
-      email: `will.smith@swiftcart.com`,
-      passwordHash: '0x5708D0BAD8F925D9E460940B2939F911AF13856A930210AA60D2A70B5EF202A60D947A081B8C2A7D431575A4C78974E10AD4AA3D4D41A38CB2D31901BDC9F265',
-      isActive: 1,
-      createdOnUTC: '2023-11-23 09:25:38.0000000',
-   },
+const dummyUsers = [
    {
       firstName: 'Faraz',
       lastName: 'Arif',
       email: `faraz.arif@paymytuition.com`,
-      passwordHash: '0x5708D0BAD8F925D9E460940B2939F911AF13856A930210AA60D2A70B5EF202A60D947A081B8C2A7D431575A4C78974E10AD4AA3D4D41A38CB2D31901BDC9F265',
+      passwordHash: '877e1b1eb3d32f69cbc014f51a7f623d777b03cc0983df0ab3d5daa1534f26761e6c0812f43a5ad458e9f401d9c13c7864ecef647b98af62928e0090101b4c4f:f263035d67a3f2831f285dbf5fe05bac',
       isActive: 1,
       createdOnUTC: '2023-11-23 09:25:38.0000000',
    }
@@ -153,7 +145,7 @@ async function initCategoryData() {
    }
 }
 
-async function initCustomerData() {
+async function initUserData() {
    const sql = `
    INSERT INTO user (
       firstName,
@@ -168,13 +160,13 @@ async function initCustomerData() {
 
    const stmt = db.prepare(sql);
 
-   for (const customer of dummyCustomers) {
+   for (const user of dummyUsers) {
       const data = [
-         customer.firstName,
-         customer.lastName,
-         customer.email,
-         customer.passwordHash,
-         customer.isActive,
+         user.firstName,
+         user.lastName,
+         user.email,
+         user.passwordHash,
+         user.isActive,
       ];
       await stmt.run(data);
    }
@@ -184,5 +176,5 @@ async function initCustomerData() {
 //#region Initate method to populate table
 
 initCategoryData();
-initCustomerData();
+initUserData();
 //#endregion

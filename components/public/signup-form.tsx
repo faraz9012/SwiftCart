@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from 'next/navigation';
+import { useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -16,7 +17,6 @@ import {
 } from "@/components/ui/form"
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Register } from "@/lib/auth-actions/auth-action";
 import { toast } from "sonner";
@@ -48,7 +48,7 @@ export default function SignUp() {
             email: "",
             password: ""
         },
-    })
+    });
     const router = useRouter();
 
     async function onSubmit(values: z.infer<typeof formSchema>) {

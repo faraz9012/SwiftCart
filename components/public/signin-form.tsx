@@ -1,10 +1,11 @@
 'use client';
 
 import Link from "next/link";
+import { useRouter } from 'next/navigation';
+import { useForm } from "react-hook-form";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
     Form,
     FormControl,
@@ -16,8 +17,9 @@ import {
 } from "@/components/ui/form"
 
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
 import { z } from "zod";
+import { LoginUser } from "@/lib/auth-actions/auth-action";
+import { toast } from "sonner";
 
 const formSchema = z.object({
     email: z.string().email({
@@ -35,10 +37,20 @@ export default function SignIn() {
             email: "",
             password: ""
         },
-    })
+    });
 
-    function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log(values)
+    const router = useRouter();
+
+    async function onSubmit(values: z.infer<typeof formSchema>) {
+        const response = await LoginUser(values);
+        if (response.success) {
+            toast.success(response.message);
+            router.push("/");
+
+        }
+        else {
+            toast.error(response?.message || "Login failed.");
+        }
     }
     return (
         <>
