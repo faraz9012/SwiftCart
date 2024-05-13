@@ -29,6 +29,7 @@ export const columns: ColumnDef<Category>[] = [
   {
     id: "select",
     header: ({ table }) => (
+      <>
       <Checkbox
         checked={
           table.getIsAllPageRowsSelected() ||
@@ -37,6 +38,8 @@ export const columns: ColumnDef<Category>[] = [
         onCheckedChange={(value: any) => table.toggleAllPageRowsSelected(!!value)}
         aria-label="Select all"
       />
+      <span className="sr-only">Select all rows</span>
+      </>
     ),
     cell: ({ row }) => (
       <Checkbox

@@ -45,7 +45,7 @@ export async function verifyAuth() {
     }
 
     const sessionId = sessionCookie.value;
-
+    
     if (!sessionId) {
         return {
             user: null,

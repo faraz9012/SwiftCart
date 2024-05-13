@@ -27,7 +27,7 @@ export async function Register({ firstName, lastName, email, password }: { first
 export async function LoginUser({ email, password }: { email: string, password: string }) {
 
     try {
-        const user: any = getUserByEmail(email);
+        const user: any = getUserByEmail(email.toLowerCase());
         if (!user) {
             return { success: false, message: "Could not authenticate user, please check your credentials." }
         }
@@ -56,12 +56,14 @@ export async function LogoutUser() {
         let errorMessage = "Uh-Oh! Something went wrong."
         return { success: false, message: errorMessage }
     }
-
 }
 
 export async function checkUserPermissions() {
     const userId:any = (await verifyAuth())?.user?.id;
 
-    const permissions = await getPermissionsByUserId(userId)
-    console.log(permissions);
+    const permissions = await getPermissionsByUserId(userId);
+
+    // console.log(permissions);
+
+    return permissions;
 }
