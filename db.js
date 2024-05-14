@@ -97,7 +97,7 @@ const UserRoleMapping = [
    },
 ]
 
-export const PermissionRecord = [
+const PermissionRecord = [
    {
       name: "Access admin area",
       systemName: "AccessAdminPanel",

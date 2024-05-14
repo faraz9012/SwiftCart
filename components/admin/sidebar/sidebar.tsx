@@ -7,6 +7,7 @@ import {
   Search,
   Settings,
 } from "lucide-react";
+import dynamic from "next/dynamic";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -31,7 +32,8 @@ import SideNavMobileLink from "./sidebar-mobile-navigation";
 import { LogoutUser } from "@/lib/auth-actions/auth-action";
 import { toast } from "sonner";
 
-export default function Sidebar({children}: {children: React.ReactNode}) {
+
+const Sidebar =({children}: {children: React.ReactNode}) => {
     const pathname = usePathname();
     const router = useRouter();
 
@@ -47,7 +49,8 @@ export default function Sidebar({children}: {children: React.ReactNode}) {
     }
     }
   return (
-    <div className="flex min-h-screen w-full flex-col">
+    // <div className="flex min-h-screen w-full flex-col">
+    <>
       <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex">
         <nav className="flex flex-col items-center gap-4 px-2 sm:py-5" title="sidebar">
           <SideNavLink />
@@ -116,6 +119,9 @@ export default function Sidebar({children}: {children: React.ReactNode}) {
           {children}
         </main>
       </div>
-    </div>
+    </>
+    // </div>
   )
 }
+
+export default dynamic (() => Promise.resolve(Sidebar), {ssr: false});

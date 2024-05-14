@@ -17,7 +17,8 @@ export default function SideNavMobileLink() {
     const isMobile = useMediaQuery("only screen and (max-width : 768px)");
 
     return (
-        isMobile && (
+       <>
+       { isMobile && (
             <>
                 <Sheet>
                     <SheetTrigger asChild>
@@ -41,7 +42,8 @@ export default function SideNavMobileLink() {
                                     id={item.id}
                                     href={item.route}
                                     title={item.title}
-                                    className={`flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground ${pathname === item.route ? "text-white" : ""}`}
+                                    key={item.id}
+                                    className={`flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground ${pathname === item.route ? "text-black border-b-2 w-fit border-b-black dark:text-white dark:border-b-white" : ""}`}
                                 >
 
                                     {item.icon && <item.icon className="size-5" />}
@@ -53,7 +55,8 @@ export default function SideNavMobileLink() {
                     </SheetContent>
                 </Sheet>
             </>
-        )
+        )}
+       </>
     );
 
 }

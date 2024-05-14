@@ -1,18 +1,23 @@
 import { getCategories } from "@/lib/category";
-import { Category, columns } from './columns';
-import { DataTable } from "@/components/admin/data-table";
+import { Category } from './columns';
+import CategoryDataTable from "./category-data-table";
+import AddCategoryButton from "./add-category";
 
 export default async function CategoryPage() {
   const categories = await getCategories() as Category[];
 
   return (
     <div className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
-      <div className="">
-        <h1 className="text-lg font-semibold md:text-2xl">Category</h1>
-        <h2>Category insights see how your categories are doing</h2>
+      <div className="block lg:flex lg:justify-between lg:items-center">
+        <div className="">
+          <h1 className="text-lg font-semibold md:text-2xl">Category</h1>
+          <h2>Category insights see how your categories are doing</h2>
+        </div>
+        <div className="mt-2">
+          <AddCategoryButton />
+        </div>
       </div>
-      
-      <DataTable columns={columns} data={categories} />
+      {/* <CategoryDataTable categories={categories} /> */}
     </div>
   );
 }
