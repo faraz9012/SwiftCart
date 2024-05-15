@@ -12,7 +12,7 @@ import {
 } from "@/components/ui/tooltip";
 
 import { SIDEBAR_NAVIGATION } from "../../constants/sidebar-navigation";
-import Logo from "@/components/logo";
+import Logo from "@/components/shared/logo";
 // import { checkUserPermissions } from "@/lib/auth-actions/auth-action";
 
 export default function SideNavLink() {

@@ -14,10 +14,10 @@ export default async function CategoryPage() {
           <h2>Category insights see how your categories are doing</h2>
         </div>
         <div className="mt-2">
-          <AddCategoryButton />
+          <AddCategoryButton categories={categories} />
         </div>
       </div>
-      {/* <CategoryDataTable categories={categories} /> */}
+      <CategoryDataTable categories={categories} />
     </div>
   );
 }

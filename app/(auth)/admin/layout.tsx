@@ -12,10 +12,8 @@ export default async function AuthRootLayout({
       redirect("/");
     }
     return (
-      <>
         <Sidebar>
           {children}
         </Sidebar>
-      </>
     );
   }

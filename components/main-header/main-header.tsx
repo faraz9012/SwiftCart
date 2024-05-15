@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
-import Logo from "../logo"
+import Logo from "../shared/logo"
 import { ModeToggle } from "../mode-toggle";
 
 export default function MainHeader() {

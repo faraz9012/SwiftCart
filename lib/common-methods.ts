@@ -1,3 +1,5 @@
+import { getCategoryBySlug } from "./category";
+
 export function getUTCDateTime() {
     const now = new Date();
     const year = now.getUTCFullYear();
@@ -8,4 +10,19 @@ export function getUTCDateTime() {
     const seconds = now.getUTCSeconds().toString().padStart(2, "0");
 
     return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}Z`;
+}
+
+export async function generateSlug(name: string) {
+
+    const slug = name.toLowerCase().replace(" ", "-");
+    let uniqueSlug = slug;
+    let suffix = 1;
+
+    while (await getCategoryBySlug(uniqueSlug)) {
+        uniqueSlug = `${slug}-${suffix}`;
+        suffix++;
+    }
+
+    return uniqueSlug;
+
 }

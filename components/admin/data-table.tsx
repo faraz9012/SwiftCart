@@ -52,7 +52,7 @@ export function DataTable<TData, TValue>({
 }: DataTableProps<TData, TValue>) {
   const [ConfirmDialog, confirm] = useConfirm(
     "Are you sure?",
-    "You are about to perform a bulk delete."
+    "There's no going back from this. Once it's done, it's done."
   )
 
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -84,7 +84,7 @@ export function DataTable<TData, TValue>({
   return (
     <div>
       <ConfirmDialog />
-      <div className="lg:flex items-center py-4">
+      <div className="lg:flex lg:justify-between items-center py-4">
         <Input
           placeholder={`Search by ${filterKey}...`}
           aria-label={`Search by ${filterKey}...`}
@@ -94,12 +94,13 @@ export function DataTable<TData, TValue>({
           }
           className="max-w-sm"
         />
+        <div className="mt-2 mr-2 flex items-center gap-2">
         {table.getFilteredSelectedRowModel().rows.length > 0 && (
           <Button
             disabled={disabled}
             size="sm"
-            variant="outline"
-            className="ml-2 font-normal text-xs"
+            variant="destructive"
+            className="font-medium"
             onClick={async () => {
               const ok = await confirm();
 
@@ -141,6 +142,7 @@ export function DataTable<TData, TValue>({
               })}
           </DropdownMenuContent>
         </DropdownMenu>
+        </div>
       </div>
       <div className="rounded-md border">
         <Table>

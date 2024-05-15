@@ -147,7 +147,7 @@ const PermissionRecordMapping = [
 db.exec(`
     CREATE TABLE IF NOT EXISTS Category (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
-      name TEXT NOT NULL,
+      name TEXT NOT NULL UNIQUE,
       slug TEXT NOT NULL UNIQUE,
       description TEXT NOT NULL,
       image TEXT NOT NULL,

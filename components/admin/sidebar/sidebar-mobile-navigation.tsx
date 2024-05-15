@@ -10,7 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
 import { SIDEBAR_NAVIGATION } from "../../constants/sidebar-navigation";
-import Logo from "@/components/logo";
+import Logo from "@/components/shared/logo";
 
 export default function SideNavMobileLink() {
     const pathname = usePathname();
@@ -43,7 +43,9 @@ export default function SideNavMobileLink() {
                                     href={item.route}
                                     title={item.title}
                                     key={item.id}
-                                    className={`flex items-center gap-4 px-2.5 text-muted-foreground hover:text-foreground ${pathname === item.route ? "text-black border-b-2 w-fit border-b-black dark:text-white dark:border-b-white" : ""}`}
+                                    className={`flex items-center gap-4 px-2.5
+                                     ${pathname === item.route ? "text-black border-b-2 w-fit border-b-black dark:text-white dark:border-b-white"
+                                      : "text-muted-foreground "}`}
                                 >
 
                                     {item.icon && <item.icon className="size-5" />}
