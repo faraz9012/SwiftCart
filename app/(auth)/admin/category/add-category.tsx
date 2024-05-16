@@ -70,7 +70,7 @@ export default function AddCategoryButton({ categories }: { categories: Category
     });
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
-         const response = await createCategory(values);
+        const response = await createCategory(values);
         if (response) {
             if (response.success) {
                 toast.success(response.message);
@@ -89,7 +89,7 @@ export default function AddCategoryButton({ categories }: { categories: Category
                     Add new
                 </Button>
             </SheetTrigger>
-            <SheetContent>
+            <SheetContent side="fullScreen">
                 <SheetHeader>
                     <SheetTitle>Create category</SheetTitle>
                     <SheetDescription>
@@ -115,7 +115,22 @@ export default function AddCategoryButton({ categories }: { categories: Category
                                         )}
                                     />
                                 </div>
-                                <div className="grid grid-cols-2 gap-8">
+                                <div className="grid lg:grid-cols-2 gap-2">
+                                    <div className="grid">
+                                        <FormField
+                                            control={form.control}
+                                            name="name"
+                                            render={({ field }) => (
+                                                <FormItem>
+                                                    <FormLabel>Slug</FormLabel>
+                                                    <FormControl>
+                                                        <Input type="text" placeholder="electronics" {...field} autoComplete="name" readOnly disabled />
+                                                    </FormControl>
+                                                    <FormMessage />
+                                                </FormItem>
+                                            )}
+                                        />
+                                    </div>
                                     <div className="grid">
                                         <FormField
                                             control={form.control}
@@ -130,7 +145,7 @@ export default function AddCategoryButton({ categories }: { categories: Category
                                                                     variant="outline"
                                                                     role="combobox"
                                                                     className={cn(
-                                                                        "w-[168px] justify-between",
+                                                                        "w-full justify-between",
                                                                         !field.value && "text-muted-foreground"
                                                                     )}
                                                                 >
@@ -139,7 +154,7 @@ export default function AddCategoryButton({ categories }: { categories: Category
                                                                             (category) => category.id === field.value
                                                                         )?.name
                                                                         : "Select category"}
-                                                                    <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                                                                    <ChevronsUpDown className="ml-2 size-4 shrink-0 opacity-50" />
                                                                 </Button>
                                                             </FormControl>
                                                         </PopoverTrigger>
@@ -159,7 +174,7 @@ export default function AddCategoryButton({ categories }: { categories: Category
                                                                             >
                                                                                 <Check
                                                                                     className={cn(
-                                                                                        "mr-2 h-4 w-4",
+                                                                                        "mr-2 size-4",
                                                                                         category.id === field.value
                                                                                             ? "opacity-100"
                                                                                             : "opacity-0"
@@ -173,21 +188,6 @@ export default function AddCategoryButton({ categories }: { categories: Category
                                                             </Command>
                                                         </PopoverContent>
                                                     </Popover>
-                                                </FormItem>
-                                            )}
-                                        />
-                                    </div>
-                                    <div className="grid">
-                                        <FormField
-                                            control={form.control}
-                                            name="name"
-                                            render={({ field }) => (
-                                                <FormItem>
-                                                    <FormLabel>Slug</FormLabel>
-                                                    <FormControl>
-                                                        <Input type="text" placeholder="electronics" {...field} autoComplete="name" readOnly disabled />
-                                                    </FormControl>
-                                                    <FormMessage />
                                                 </FormItem>
                                             )}
                                         />
@@ -215,7 +215,7 @@ export default function AddCategoryButton({ categories }: { categories: Category
                                     />
                                 </div>
                             </div>
-                            <div className="grid">
+                            <div className="grid text-center">
                                 <FormField
                                     control={form.control}
                                     name="image"
@@ -251,7 +251,7 @@ export default function AddCategoryButton({ categories }: { categories: Category
                                     )}
                                 />
                             </div>
-                            <Button type="submit" className="w-full">
+                            <Button type="submit" className="w-full lg:w-2/4 mx-auto">
                                 Create
                             </Button>
                         </div>

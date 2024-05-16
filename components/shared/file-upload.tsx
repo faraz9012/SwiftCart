@@ -1,5 +1,5 @@
 import * as React from "react"
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Image from "next/image";
 
 import { cn } from "@/lib/utils"
@@ -13,6 +13,7 @@ const FileUpload = React.forwardRef<HTMLInputElement, InputProps>(
     ({ className, id, ...props }, ref) => {
 
         const [uploadedFile, setUploadedFile] = useState<string | ArrayBuffer | null>(null);
+        const imageRef = useRef(null)
 
         function handleFileChange(event: any) {
             const file = event.target.files[0];
@@ -25,12 +26,18 @@ const FileUpload = React.forwardRef<HTMLInputElement, InputProps>(
             }
             fileReader.readAsDataURL(file);
         }
+
+        const removeImage = (event: any) => {
+            event.preventDefault();
+            setUploadedFile(null);
+
+        };
         return (
             <div className="flex items-center justify-center w-full">
                 <label
                     htmlFor={id}
                     onChange={handleFileChange}
-                    className="flex flex-col items-center justify-center w-full h-54 max-h-52 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 ">
+                    className={cn(!uploadedFile && `flex flex-col items-center w-full lg:w-3/4 h-64 max-h-52 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50 `)}>
 
                     {!uploadedFile &&
                         <div className="flex flex-col items-center justify-center pt-5 pb-6">
@@ -47,13 +54,22 @@ const FileUpload = React.forwardRef<HTMLInputElement, InputProps>(
                     }
 
                     {uploadedFile &&
-                        <Image
-                            alt="Category image"
-                            src={uploadedFile.toString()}
-                            className="object-contain overflow-hidden"
-                            width={350}
-                            height={150}
-                        />
+                        <div className="relative me-2 ">
+                            <button className="absolute right-[-5px] top-[-10px] bg-red-700 text-white rounded-full p-1 cursor-pointer" type="button" onClick={removeImage}>
+                                <svg xmlns="http://www.w3.org/2000/svg" className="h-3 w-3" fill="currentColor" viewBox="0 0 384 512">
+                                    <path d="M376.6 84.5c11.3-13.6 9.5-33.8-4.1-45.1s-33.8-9.5-45.1 4.1L192 206 56.6 43.5C45.3 29.9 25.1 28.1 11.5 39.4S-3.9 70.9 7.4 84.5L150.3 256 7.4 427.5c-11.3 13.6-9.5 33.8 4.1 45.1s33.8 9.5 45.1-4.1L192 306 327.4 468.5c11.3 13.6 31.5 15.4 45.1 4.1s15.4-31.5 4.1-45.1L233.7 256 376.6 84.5z" />
+                                </svg>
+                            </button>
+
+                            <Image
+                                alt="Category image"
+                                src={(uploadedFile) ? uploadedFile.toString() : ""}
+                                className="object-contain overflow-hidden max-h-56 w-fit rounded-lg shadow-lg shadow-gray-400"
+                                width={350}
+                                height={250}
+                                ref={imageRef}
+                            />
+                        </div>
                     }
 
                     <input
