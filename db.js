@@ -11,6 +11,7 @@ const dummyCategories = [
       parentCategoryId: 0,
       published: 0,
       createdOnUTC: '2023-11-23 09:25:38.0000000',
+      isDeleted: 0
    },
    {
       name: 'Gaming consoles',
@@ -20,6 +21,7 @@ const dummyCategories = [
       parentCategoryId: 1,
       published: 0,
       createdOnUTC: '2023-11-23 09:25:38.0000000',
+      isDeleted: 0
    },
    {
       name: 'Cell phones',
@@ -29,6 +31,7 @@ const dummyCategories = [
       parentCategoryId: 1,
       published: 0,
       createdOnUTC: '2023-11-23 09:25:38.0000000',
+      isDeleted: 0
    },
    {
       name: 'Computers',
@@ -38,6 +41,7 @@ const dummyCategories = [
       parentCategoryId: 0,
       published: 0,
       createdOnUTC: '2023-11-23 09:25:38.0000000',
+      isDeleted: 0
    },
    {
       name: 'Laptops',
@@ -47,6 +51,7 @@ const dummyCategories = [
       parentCategoryId: 4,
       published: 0,
       createdOnUTC: '2023-11-23 09:25:38.0000000',
+      isDeleted: 0
    },
    {
       name: 'Desktop',
@@ -56,6 +61,7 @@ const dummyCategories = [
       parentCategoryId: 4,
       published: 0,
       createdOnUTC: '2023-11-23 09:25:38.0000000',
+      isDeleted: 0
    }
 ];
 
@@ -154,7 +160,8 @@ db.exec(`
       parentCategoryId INT NOT NULL,
       published BOOLEAN NOT NULL,
       createdOnUTC DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-      updatedOnUTC DATETIME DEFAULT NULL
+      updatedOnUTC DATETIME DEFAULT NULL,
+      isDeleted BOOLEAN NOT NULL DEFAULT 0
    )`
 );
 
@@ -235,9 +242,10 @@ async function initCategoryData() {
     image,
     parentCategoryId,
     published,
-    createdOnUTC
+    createdOnUTC,
+    isDeleted
   )
-  VALUES (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP)  -- Use database function
+  VALUES (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP,?)  -- Use database function
 `;
 
    const stmt = db.prepare(sql);
@@ -250,6 +258,7 @@ async function initCategoryData() {
          category.image,
          category.parentCategoryId,
          category.published,
+         category.isDeleted
       ];
       await stmt.run(data);
    }

@@ -2,12 +2,14 @@
 
 import { bulkDeleteCategories, getCategoryById, getCategoryByName, insertCategory } from '@/lib/category';
 import { generateSlug, getUTCDateTime } from '@/lib/common-methods';
+import { revalidatePath } from 'next/cache';
 
 
 export async function deleteCategories(id: number[]) {
     if(!id) return;
     try {
         await bulkDeleteCategories(id);
+        revalidatePath("/admin/category");
         return {success: true, message: "Category(s) deleted"}
     } catch (error) {
         return {success: true, message: `Something went wrong ${error}`}
@@ -27,6 +29,8 @@ export async function createCategory({ name, desc, image, parentCategoryId, publ
         const category = await insertCategory({ name, slug, desc, image, parentCategoryId, published });
 
         if (!category) return { success: false, message: "An error occured! Please try again." }
+        
+        revalidatePath("/admin/category");
 
         return { success: true, message: "New category created!" }
     }
