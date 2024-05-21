@@ -69,11 +69,15 @@ export default function AddCategoryButton({ categories }: { categories: Category
         },
     });
 
+    const resetFormValues = () => {
+        form.reset();
+      };
     async function onSubmit(values: z.infer<typeof formSchema>) {
         const response = await createCategory(values);
         if (response) {
             if (response.success) {
                 toast.success(response.message);
+                resetFormValues();
             }
             else {
                 toast.error(response?.message);
@@ -83,7 +87,7 @@ export default function AddCategoryButton({ categories }: { categories: Category
 
     return (
         <Sheet>
-            <SheetTrigger asChild>
+            <SheetTrigger asChild onClick={resetFormValues}>
                 <Button>
                     <CirclePlus className="mr-2" />
                     Add new
@@ -223,7 +227,7 @@ export default function AddCategoryButton({ categories }: { categories: Category
                                         <FormItem>
                                             <FormLabel>Upload image</FormLabel>
                                             <FormControl>
-                                                <FileUpload id="categoryImageUpload" {...field} />
+                                                <FileUpload id="categoryImageUpload" {...field} field={field} />
                                             </FormControl>
                                             <FormMessage />
                                         </FormItem>

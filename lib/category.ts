@@ -38,3 +38,15 @@ export async function bulkDeleteCategories(id: number[]) {
         await deleteStatement.run(categoryId);
     }
 }
+
+export async function deleteCategory(id: number) {
+    try {
+        const result = await db.prepare(`
+        UPDATE Category SET isDeleted=1 WHERE id = ?
+        `).run(id);
+
+        return result;
+    } catch (error) {
+        console.error("Error deleting category:", error);
+    }
+}
