@@ -1,3 +1,4 @@
+import MainFooter from "@/components/main-footer/main-footer";
 import MainHeader from "@/components/main-header/main-header";
 
 export default function PublicLayout({
@@ -9,6 +10,7 @@ export default function PublicLayout({
       <div>
         <MainHeader />
         {children}
+        <MainFooter />
       </div>
     );
   }
