@@ -1,22 +1,21 @@
 import Link from "next/link"
-import { CircleUser, Menu, Search } from "lucide-react"
+import { Menu, Search } from "lucide-react"
 import Image from "next/image";
 
 import { Button } from "@/components/ui/button"
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
 import { Input } from "@/components/ui/input"
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet"
 import Logo from "../shared/logo"
 import { ModeToggle } from "../mode-toggle";
+import { verifyAuth } from "@/lib/auth-actions/auth";
+import MainHeaderDropdownItems from "./main-header-dropdown";
 
-export default function MainHeader() {
+
+export default async function MainHeader() {
+
+  const verifyAuthentication = await verifyAuth();
+  const isAuth = verifyAuthentication.user != null && verifyAuthentication.session != null;
+
   return (
     <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
       <Link
@@ -124,31 +123,7 @@ export default function MainHeader() {
         <div className="hidden md:flex" >
           <ModeToggle />
         </div>
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="secondary" size="icon" className="rounded-full">
-              <CircleUser className="h-5 w-5" />
-              <span className="sr-only">Toggle user menu</span>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>My Account</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <Link href="/admin">
-              <DropdownMenuItem>
-                Dashboard
-              </DropdownMenuItem>
-            </Link>
-            <DropdownMenuItem>Settings</DropdownMenuItem>
-            <DropdownMenuItem>Support</DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <Link href="/login">
-              <DropdownMenuItem>
-                Login
-              </DropdownMenuItem>
-            </Link>
-          </DropdownMenuContent>
-        </DropdownMenu>
+        <MainHeaderDropdownItems isAuthenticated={isAuth} />
       </div>
     </header>
   )
