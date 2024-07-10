@@ -168,7 +168,7 @@ export default function AddCategoryButton({ categories }: { categories: Category
                                                                 <CommandEmpty>No result(s) found.</CommandEmpty>
                                                                 <CommandGroup>
                                                                     <CommandList>
-                                                                        {categories.map((category) => (
+                                                                        {categories.filter((item)=>item.parentCategoryId===0).map((category) => (
                                                                             <CommandItem
                                                                                 value={(category.id).toString()}
                                                                                 key={category.name}
@@ -206,7 +206,7 @@ export default function AddCategoryButton({ categories }: { categories: Category
                                                 <FormLabel>Description</FormLabel>
                                                 <FormControl>
                                                     <Textarea
-                                                        placeholder="Tell us a little bit about yourself"
+                                                        placeholder="Description about the category"
                                                         className="resize-none"
                                                         {...field}
                                                         autoComplete="desc"

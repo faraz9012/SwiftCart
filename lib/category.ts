@@ -1,3 +1,4 @@
+import { Category } from '@/app/(auth)/admin/category/columns';
 import sql from 'better-sqlite3';
 
 const db = sql('SwiftCart.db');
@@ -8,7 +9,7 @@ export async function getCategories() {
 }
 
 export function getCategoryById(id: number) {
-    return db.prepare(`SELECT * FROM Category WHERE id=? AND isDeleted=0`).get(id);
+    return db.prepare(`SELECT * FROM Category WHERE id=? AND isDeleted=0`).get(id) as Promise<Category>;
 }
 
 export async function getCategoryByName(name: string) {

@@ -49,7 +49,7 @@ const FileUpload = forwardRef<HTMLInputElement, InputProps>(({ className, id, fi
                 htmlFor={id} className={cn(!uploadedFile && `flex flex-col items-center w-full lg:w-3/4 h-64 max-h-52 border-2 border-gray-300 border-dashed rounded-lg cursor-pointer bg-gray-50`)}>
                 {!uploadedFile && (
                     <div className="flex flex-col items-center justify-center pt-5 pb-6">
-                        <CloudUpload className="w-8 h-8 mb-4 text-gray-500" />
+                        <CloudUpload className="size-8 mb-4 text-gray-500" />
                         <p className="mb-2 text-sm text-gray-500">
                             <span className="font-semibold">Click to upload</span>
                         </p>

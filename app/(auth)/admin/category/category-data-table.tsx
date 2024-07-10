@@ -9,7 +9,7 @@ export default function CategoryDataTable({ categories }: { categories: Category
 
     return (
         <DataTable
-            columns={columns}
+            columns={columns(categories)}
             data={categories}
             filterKey="name"
             onDelete={async (row) => {

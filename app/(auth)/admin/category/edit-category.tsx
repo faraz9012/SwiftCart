@@ -92,7 +92,7 @@ export default function EditCategoryButton({ categoryToEdit }: { categoryToEdit:
                       <FormItem>
                         <FormLabel>Description</FormLabel>
                         <FormControl>
-                          <Textarea placeholder="Tell us a little bit about yourself" className="resize-none" {...field} autoComplete="desc" rows={5} />
+                          <Textarea placeholder="Description about the category" className="resize-none" {...field} autoComplete="desc" rows={5} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>

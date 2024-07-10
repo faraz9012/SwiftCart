@@ -19,7 +19,12 @@ export type Category = {
   updatedOn?: string
 }
 
-export const columns: ColumnDef<Category>[] = [
+const useParentCategoryName = (categories: Category[], parentCategoryId: number) => {
+  const parentCategory = categories.find(category => category.id === parentCategoryId);
+  return parentCategory ? parentCategory.name : "---";
+};
+
+export const columns = (categories:any): ColumnDef<Category>[] => [
   {
     id: "select",
     header: ({ table }) => (
@@ -73,9 +78,9 @@ export const columns: ColumnDef<Category>[] = [
       )
     },
     cell: ({ row }) => {
-      const id = parseFloat(row.getValue("parentCategoryId"));
- 
-      return <div className="font-medium">{id}</div>
+      const parentCategoryId = parseFloat(row.getValue("parentCategoryId"));
+      const parentCategoryName = useParentCategoryName(categories, parentCategoryId);
+      return <div className="font-medium">{parentCategoryName}</div>;
     },
   },
   {

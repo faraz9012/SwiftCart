@@ -33,21 +33,20 @@ import { LogoutUser } from "@/lib/auth-actions/auth-action";
 import { toast } from "sonner";
 
 
-const Sidebar =({children}: {children: React.ReactNode}) => {
-    const pathname = usePathname();
-    const router = useRouter();
+const Sidebar = ({ children }: { children: React.ReactNode }) => {
+  const pathname = usePathname();
+  const router = useRouter();
 
-    async function signOut() {
-      const response = await LogoutUser();
-      if (response.success) {
-        toast.success(response.message);
-        router.push("/");
-
+  async function signOut() {
+    const response = await LogoutUser();
+    if (response.success) {
+      toast.success(response.message);
+      router.push("/");
     }
     else {
-        toast.error(response?.message || "Login failed.");
+      toast.error(response?.message || "Something went wrong will logging you out.");
     }
-    }
+  }
   return (
     // <div className="flex min-h-screen w-full flex-col">
     <>
@@ -57,18 +56,18 @@ const Sidebar =({children}: {children: React.ReactNode}) => {
         </nav>
         <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">
           <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger asChild>
-              <Link
-                href="/admin/settings"
-                className={`flex size-9 items-center justify-center rounded-full text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8 ${pathname === "/admin/settings" ? "bg-black text-white dark:bg-slate-200 dark:text-gray-950" : ""}`}
-              >
-                <Settings className="h-5 w-5" />
-                <span className="sr-only">Settings</span>
-              </Link>
-            </TooltipTrigger>
-            <TooltipContent side="right">Settings</TooltipContent>
-          </Tooltip>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Link
+                  href="/admin/settings"
+                  className={`flex size-9 items-center justify-center rounded-full text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8 ${pathname === "/admin/settings" ? "bg-black text-white dark:bg-slate-200 dark:text-gray-950" : ""}`}
+                >
+                  <Settings className="h-5 w-5" />
+                  <span className="sr-only">Settings</span>
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent side="right">Settings</TooltipContent>
+            </Tooltip>
           </TooltipProvider>
         </nav>
       </aside>
@@ -124,4 +123,4 @@ const Sidebar =({children}: {children: React.ReactNode}) => {
   )
 }
 
-export default dynamic (() => Promise.resolve(Sidebar), {ssr: false});
+export default dynamic(() => Promise.resolve(Sidebar), { ssr: false });

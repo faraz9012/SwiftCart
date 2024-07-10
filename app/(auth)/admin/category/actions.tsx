@@ -1,9 +1,8 @@
 'use server';
 
 import { bulkDeleteCategories, deleteCategory, getCategories, getCategoryById, getCategoryByName, insertCategory } from '@/lib/category';
-import { generateSlug, getUTCDateTime } from '@/lib/common-methods';
+import { generateSlug } from '@/lib/common-methods';
 import { revalidatePath } from 'next/cache';
-
 
 export async function deleteCategories(id: number[]) {
     if(!id) return;
@@ -57,4 +56,8 @@ export async function createCategory({ name, desc, image, parentCategoryId, publ
 
 export async function getAllCategories(){
     return await getCategories();
+}
+
+export async function getCategoryByIdServerAction(id: number){
+    return await getCategoryById(id);
 }
