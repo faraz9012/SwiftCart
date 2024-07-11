@@ -1,5 +1,5 @@
 import { Folders, Home, Package, ShoppingCart } from "lucide-react"
-import { Permissions  } from "./user-roles"
+import { Permissions } from "./user-roles"
 
 interface SidebarNavigation {
     id: string;

@@ -2,8 +2,10 @@ import { getCategories } from "@/lib/category";
 import { Category } from './columns';
 import CategoryDataTable from "./category-data-table";
 import AddCategoryButton from "./add-category";
+import { Permissions } from '@/components/constants/user-roles';
+import hasPermission from "@/hooks/use-permission-check";
 
-export default async function CategoryPage() {
+async function CategoryPage() {
   const categories = await getCategories() as Category[];
 
   return (
@@ -20,4 +22,6 @@ export default async function CategoryPage() {
       <CategoryDataTable categories={categories} />
     </div>
   );
-}
+};
+
+export default hasPermission(CategoryPage, [Permissions.ManageCategories]);

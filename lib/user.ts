@@ -24,5 +24,5 @@ export function getPermissionsByUserId(id: number | bigint) {
     INNER JOIN User u ON urm.user_id = u.id
     WHERE u.id = ?;
 
-    `).get(id)
+    `).all(id)
 }

@@ -63,7 +63,5 @@ export async function checkUserPermissions() {
 
     const permissions = await getPermissionsByUserId(userId);
 
-    // console.log(permissions);
-
     return permissions;
 }

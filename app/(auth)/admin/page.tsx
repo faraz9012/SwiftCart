@@ -25,8 +25,11 @@ import {
   TableRow,
 } from "@/components/ui/table";
 
+import hasPermission from "@/hooks/use-permission-check";
+import { Permissions } from '@/components/constants/user-roles';
 
-export default async function DashboardPage() {
+
+async function DashboardPage() {
 
   return (
     <div className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
@@ -232,3 +235,5 @@ export default async function DashboardPage() {
     </div>
   );
 }
+
+export default hasPermission(DashboardPage, [Permissions.AccessAdminPanel]);
