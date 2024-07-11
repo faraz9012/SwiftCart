@@ -1,4 +1,3 @@
-import { useState } from "react";
 import { checkUserPermissions } from '@/lib/auth-actions/auth-action';
 import UnauthorizedPage from '@/components/shared/unauthorized';
 
@@ -8,7 +7,6 @@ const hasPermission = (Component?: any, requiredPermissions?: any) => {
     const userPermissions = await checkUserPermissions();
     const isUserPermitted = requiredPermissions.every((permission: string) => userPermissions.includes(permission));
 
-    console.log(isUserPermitted);
     // Check if user has rights then return boolean value (For UI purposes)
     if (!Component) return isUserPermitted;
 

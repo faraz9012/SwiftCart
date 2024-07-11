@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useMediaQuery } from "usehooks-ts";
@@ -9,12 +10,34 @@ import { PanelLeft } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
 
-import { SIDEBAR_NAVIGATION } from "../../constants/sidebar-navigation";
+import { SIDEBAR_NAVIGATION, SidebarNavigation } from "../../constants/sidebar-navigation";
 import Logo from "@/components/shared/logo";
+import { checkUserPermissions } from "@/lib/auth-actions/auth-action";
 
 export default function SideNavMobileLink() {
     const pathname = usePathname();
     const isMobile = useMediaQuery("only screen and (max-width : 768px)");
+  
+    const [filteredNav, setFilteredNav] = useState<SidebarNavigation[]>([]);
+    useEffect(() => {
+      const fetchPermissions = async () => {
+        try {
+          const userPermissions = await checkUserPermissions();
+  
+          const userPermissionNames = userPermissions.map((permission:any) => permission.name);
+  
+          const filteredNavigation = SIDEBAR_NAVIGATION.filter(item =>
+            item.permissions.every(permission => userPermissionNames.includes(permission))
+          );
+  
+          setFilteredNav(filteredNavigation);
+        } catch (error) {
+          console.error("Error fetching permissions:", error); 
+        }
+      };
+  
+      fetchPermissions();
+    }, []);
 
     return (
        <>
@@ -37,7 +60,7 @@ export default function SideNavMobileLink() {
                                 <span className="sr-only">Swift-Cart</span>
                                 <span className="mt-2">Swift Cart</span>
                             </Link>
-                            {SIDEBAR_NAVIGATION.map((item) => (
+                            {filteredNav.map((item) => (
                                 <Link
                                     id={item.id}
                                     href={item.route}
