@@ -51,3 +51,17 @@ export async function deleteCategory(id: number) {
         console.error("Error deleting category:", error);
     }
 }
+
+export async function updateCategory({ id, name, slug, desc, image, parentCategoryId, published }: { id:number, name: string, slug: string, desc: string, image: string, parentCategoryId: number, published: boolean }) {
+    try {
+        const result = await db.prepare(`
+          UPDATE Category 
+          SET name = ?, slug = ?, description = ?, image = ?, parentCategoryId = ?, published = ?, updatedOnUTC = CURRENT_TIMESTAMP
+          WHERE id = ? 
+        `).run(name, slug, desc, image, parentCategoryId, (published ? 1 : 0), id);
+
+        return result;
+    } catch (error) {
+        console.error("Error inserting category:", error);
+    }
+}

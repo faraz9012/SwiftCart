@@ -10,8 +10,11 @@ import { Switch } from "@/components/ui/switch";
 import { FileUpload } from "@/components/shared/file-upload";
 import { Category } from "./columns";
 import { Edit } from "lucide-react";
+import { editCategory } from "./actions";
+import { toast } from "sonner";
 
 const formSchema = z.object({
+  id: z.number().min(1, { message: "Requested record not found." }),
   name: z.string().min(1, { message: "This field is required." }),
   desc: z.string(),
   slug: z.string().min(1, {message: "This field can't be empty"}),
@@ -24,6 +27,7 @@ export default function EditCategoryButton({ categoryToEdit }: { categoryToEdit:
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
+      id: categoryToEdit.id,
       name: categoryToEdit.name,
       slug: categoryToEdit.slug,
       desc: categoryToEdit.description,
@@ -37,15 +41,14 @@ export default function EditCategoryButton({ categoryToEdit }: { categoryToEdit:
     form.reset();
   };
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
-    // const response = await createCategory(values);
-    // if (response) {
-    //  if (response.success) {
-    //    toast.success(response.message);
-    //  } else {
-    //    toast.error(response?.message);
-    //  }
-    // }
+    const response = await editCategory(values);
+    if (response) {
+     if (response.success) {
+       toast.success(response.message);
+     } else {
+       toast.error(response?.message);
+     }
+    }
   }
 
   return (
