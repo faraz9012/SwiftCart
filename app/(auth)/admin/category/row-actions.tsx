@@ -16,9 +16,9 @@ import {
 import { MoreHorizontal, Trash } from "lucide-react";
 import { deleteCategoryById } from "./actions";
 import { toast } from "sonner";
-import EditCategoryButton from "./edit-category";
+import {EditCategoryButton} from "./edit-category";
 
-export default function RowActions(rowData: any) {
+export function RowActions(rowData: any) {
     const data = rowData.row.original;
 
     return (

@@ -5,7 +5,7 @@ import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox"
 
 import { ArrowUpDown } from "lucide-react";
-import RowActions from "./row-actions";
+import {RowActions} from "./row-actions";
 
 export type Category = {
   id: number
