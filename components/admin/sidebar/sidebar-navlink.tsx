@@ -1,7 +1,6 @@
 'use client';
 
 import { useEffect, useState } from "react";
-import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useMediaQuery } from "usehooks-ts";
 
@@ -15,6 +14,7 @@ import {
 import { SIDEBAR_NAVIGATION, SidebarNavigation } from "../../constants/sidebar-navigation";
 import Logo from "@/components/shared/logo";
 import { checkUserPermissions } from "@/lib/auth-actions/auth-action";
+import { TransitionLink } from "@/components/shared/transition-link";
 
 export default function SideNavLink() {
   
@@ -57,13 +57,13 @@ export default function SideNavLink() {
               <TooltipProvider key={item.id}>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <Link
+                    <TransitionLink
                       href={item.route}
                       className={`flex size-9 items-center justify-center rounded-full text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8 ${pathname === item.route ? "bg-black hover:text-white text-white dark:bg-slate-200 dark:text-gray-950 dark:hover:text-gray-950" : ""}`}
                     >
                       {item.icon && <item.icon className="size-5" />}
                       <span className="sr-only">{item.icon && item.title}</span>
-                    </Link>
+                    </TransitionLink>
                   </TooltipTrigger>
                   <TooltipContent side="right">{item.title}</TooltipContent>
                 </Tooltip>
