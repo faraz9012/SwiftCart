@@ -14,7 +14,7 @@ import {
 import { SIDEBAR_NAVIGATION, SidebarNavigation } from "../../constants/sidebar-navigation";
 import Logo from "@/components/shared/logo";
 import { checkUserPermissions } from "@/lib/auth-actions/auth-action";
-import { TransitionLink } from "@/components/shared/transition-link";
+import TransitionLink from "@/components/shared/transition-link";
 
 export default function SideNavLink() {
   

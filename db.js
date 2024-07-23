@@ -124,6 +124,11 @@ const PermissionRecord = [
       systemName: "ManageOrders",
       category: "Orders"
    },
+   {
+      name: "Admin area. Manage Configurations",
+      systemName: "ManageConfigurations",
+      category: "Configurations"
+   },
 ]
 
 const PermissionRecordMapping = [
@@ -141,6 +146,10 @@ const PermissionRecordMapping = [
    },
    {
       permissionRecordId: 4,
+      userRoleId: 1
+   },
+   {
+      permissionRecordId: 5,
       userRoleId: 1
    },
 ]

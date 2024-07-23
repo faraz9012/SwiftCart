@@ -26,3 +26,39 @@ export function getPermissionsByUserId(id: number | bigint) {
 
     `).all(id)
 }
+
+export async function getAllPermissions() {
+    return db.prepare(`
+        SELECT * FROM PermissionRecord;
+    `).all()
+}
+
+export async function getAllPermissionsMapping() {
+    return db.prepare(`
+        SELECT * FROM PermissionRecordMapping;
+    `).all()
+}
+
+export async function getAllUserRoles() {
+    return db.prepare(`
+        SELECT * FROM UserRole;
+    `).all()
+}
+
+export async function getAllPermissionByRoleId(roleId:number) {
+    return db.prepare(`
+        SELECT * FROM PermissionRecordMapping WHERE role_id=?;
+    `).all(roleId)
+}
+
+export async function updateUserRolesPermission(permissionId:number, roleId:number) {
+    return db.prepare(`
+        INSERT INTO PermissionRecordMapping (permission_id, role_id) VALUES (?,?);
+    `).run(permissionId, roleId)
+}
+
+export async function deleteUserRolesPermissionMapping(permissionId:number, roleId:number) {
+    return db.prepare(`
+        DELETE FROM PermissionRecordMapping WHERE permission_id = ? AND role_id = ?;
+    `).run(permissionId, roleId)
+}

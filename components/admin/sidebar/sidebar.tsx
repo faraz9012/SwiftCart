@@ -59,14 +59,14 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
             <Tooltip>
               <TooltipTrigger asChild>
                 <Link
-                  href="/admin/settings"
+                  href="/admin/configuration"
                   className={`flex size-9 items-center justify-center rounded-full text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8 ${pathname === "/admin/settings" ? "bg-black text-white dark:bg-slate-200 dark:text-gray-950" : ""}`}
                 >
                   <Settings className="h-5 w-5" />
-                  <span className="sr-only">Settings</span>
+                  <span className="sr-only">Configuration</span>
                 </Link>
               </TooltipTrigger>
-              <TooltipContent side="right">Settings</TooltipContent>
+              <TooltipContent side="right">Configuration</TooltipContent>
             </Tooltip>
           </TooltipProvider>
         </nav>
