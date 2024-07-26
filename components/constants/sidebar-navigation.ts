@@ -34,7 +34,7 @@ export const SIDEBAR_NAVIGATION: SidebarNavigation[] = [
         route: "/admin/product",
         permissions: [
             Permissions.AccessAdminPanel,
-            Permissions.ManageCategories
+            Permissions.ManageProducts
         ]
     },
     {

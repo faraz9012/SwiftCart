@@ -1,4 +1,4 @@
-"use client";
+'use client';
 
 import React, { useEffect, useState } from "react";
 import {
@@ -15,6 +15,7 @@ import { toast } from "sonner";
 import { Permission, PermissionMapping, UserRole } from "@/components/constants/user-roles";
 import { Checkbox } from "@/components/ui/checkbox";
 import { Button } from "@/components/ui/button";
+import { usePermissions } from "@/contexts/permissions-context";
 
 const getUserRoles = async (): Promise<UserRole[]> => {
     try {
@@ -63,6 +64,7 @@ export function AccessControlList() {
     const [permissions, setPermissions] = useState<Permission[]>([]);
     const [permissionsMapping, setPermissionsMapping] = useState<PermissionMapping[]>([]);
     const [selectedPermissions, setSelectedPermissions] = useState<{ [key: string]: Set<number> }>({});
+    const { updatePermissions } = usePermissions();
 
     useEffect(() => {
         getUserRoles().then(setUserRoles);
@@ -104,13 +106,16 @@ export function AccessControlList() {
             });
         }
         console.log(selectedPermissionsArray);
-        const response = await updateUserRolesServerAction(selectedPermissionsArray);
+        const response:any = await updateUserRolesServerAction(selectedPermissionsArray);
+        let updatedPermissionNames = response.updatedPermissions.map((permission: any) => permission.name);
 
-        if (response.success) 
+
+        if (response.success) {
             toast.success(response.message);
-        else 
-            toast.error(response.message || "Something wen't wrong.");
-
+            updatePermissions(updatedPermissionNames); 
+        } else {
+            toast.error(response.message || "Something went wrong.");
+        }
     };
 
     return (

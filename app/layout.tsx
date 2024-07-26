@@ -2,7 +2,9 @@ import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/theme-provider";
-import { Toaster, toast } from 'sonner';
+import { Toaster } from 'sonner';
+import { PermissionsProvider } from "@/contexts/permissions-context";
+
 const poppins = Poppins({
   subsets: ['latin'],
   display: 'swap',
@@ -11,7 +13,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "Swift Cart ",
+  title: "Swift Cart",
   description: "Swift Cart is a one stop shop for all your shopping needs.",
   icons: {
     icon: [
@@ -44,7 +46,9 @@ export default function RootLayout({
           disableTransitionOnChange
           storageKey="Swift-Cart">
           <Toaster richColors position="top-center" />
-          {children}
+          <PermissionsProvider>
+            {children}
+          </PermissionsProvider>
         </ThemeProvider>
       </body>
     </html>

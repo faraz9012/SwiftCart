@@ -2,6 +2,7 @@
 
 import { revalidatePath } from 'next/cache';
 import { getAllPermissions, getAllPermissionsMapping, getAllUserRoles, updateUserRolesPermission, deleteAllPermissionsByRoleId } from "@/lib/user";
+import { checkUserPermissions } from '@/lib/auth-actions/auth-action';
 
 export async function getAllUserRolesServerAction() {
     return await getAllUserRoles();
@@ -37,10 +38,13 @@ export async function updateUserRolesServerAction(selectedPermissionsArray: { ro
             }
         }
 
-        
-        revalidatePath("/admin/configuration");
+        // Fetch updated permissions
+        const updatedPermissions = await checkUserPermissions();
 
-        return { success: true, message: "Permissions updated successfully." };
+        // Revalidate the path to ensure the UI updates
+        revalidatePath("/admin/");
+
+        return { success: true, message: "Permissions updated successfully.",updatedPermissions};
     } catch (error) {
         console.error(`Failed to update permissions:`, error);
         return { success: false, message: "Failed to update permissions." };

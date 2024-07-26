@@ -13,34 +13,22 @@ import {
 
 import { SIDEBAR_NAVIGATION, SidebarNavigation } from "../../constants/sidebar-navigation";
 import Logo from "@/components/shared/logo";
-import { checkUserPermissions } from "@/lib/auth-actions/auth-action";
 import TransitionLink from "@/components/shared/transition-link";
+import { usePermissions } from "@/contexts/permissions-context";
 
 export default function SideNavLink() {
-  
   const pathname = usePathname();
   const isMobile = useMediaQuery("only screen and (max-width : 768px)");
+  const { currentPermissions } = usePermissions();
   
   const [filteredNav, setFilteredNav] = useState<SidebarNavigation[]>([]);
+
   useEffect(() => {
-    const fetchPermissions = async () => {
-      try {
-        const userPermissions = await checkUserPermissions();
-
-        const userPermissionNames = userPermissions.map((permission:any) => permission.name);
-
-        const filteredNavigation = SIDEBAR_NAVIGATION.filter(item =>
-          item.permissions.every(permission => userPermissionNames.includes(permission))
-        );
-
-        setFilteredNav(filteredNavigation);
-      } catch (error) {
-        console.error("Error fetching permissions:", error); 
-      }
-    };
-
-    fetchPermissions();
-  }, []);
+    const filteredNavigation = SIDEBAR_NAVIGATION.filter(item =>
+      item.permissions.every(permission => currentPermissions.includes(permission))
+    );
+    setFilteredNav(filteredNavigation);
+  }, [currentPermissions]);
 
   return (
     <>
@@ -74,5 +62,4 @@ export default function SideNavLink() {
       }
     </>
   );
-
 }
