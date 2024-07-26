@@ -1,6 +1,8 @@
+import { Permissions } from "@/components/constants/user-roles";
 import { Button } from "@/components/ui/button";
+import hasPermission from "@/hooks/use-permission-check";
 
-export default function OrderPage() {
+ function OrderPage() {
   return (
     <div className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
       <div className="">
@@ -23,3 +25,4 @@ export default function OrderPage() {
     </div>
   );
 }
+export default hasPermission(OrderPage, [Permissions.ManageOrders]);

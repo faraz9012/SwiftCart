@@ -11,6 +11,10 @@ export function createUser({ firstName, lastName, email, hashedPassword, custome
     return result.lastInsertRowid;
 }
 
+export function updateUserRole(userId:number | bigint, roleId:number) {
+    return db.prepare('INSERT INTO UserRoleMapping (user_id, role_id) VALUES (?, ?);').run(userId, roleId)
+}
+
 export function getUserByEmail(email: string) {
     return db.prepare('SELECT * FROM User WHERE email = ?').get(email)
 }
@@ -61,4 +65,10 @@ export async function deleteUserRolesPermissionMapping(permissionId:number, role
     return db.prepare(`
         DELETE FROM PermissionRecordMapping WHERE permission_id = ? AND role_id = ?;
     `).run(permissionId, roleId)
+}
+
+export async function deleteAllPermissionsByRoleId(roleId: number) {
+    return db.prepare(`
+        DELETE FROM PermissionRecordMapping WHERE role_id = ?;
+    `).run(roleId);
 }

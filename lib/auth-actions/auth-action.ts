@@ -1,9 +1,10 @@
 'use server';
 
-import { createUser, getPermissionsByUserId, getUserByEmail } from "../user";
+import { createUser, getPermissionsByUserId, getUserByEmail, updateUserRole } from "../user";
 import { hashUserPassword, verifyPassword } from "./hash";
 import { getUTCDateTime } from "../common-methods";
 import { createAuthSession, destroySession, verifyAuth } from "./auth";
+import { UserRoles } from "@/components/constants/user-roles";
 
 export async function Register({ firstName, lastName, email, password }: { firstName: string, lastName: string, email: string, password: string }) {
 
@@ -12,6 +13,11 @@ export async function Register({ firstName, lastName, email, password }: { first
 
     try {
         const customer = createUser({ firstName, lastName, email, hashedPassword, customerCreatedTime });
+
+        // set the registered role
+        let a = await updateUserRole(customer, UserRoles.Registered)
+        console.log(a);
+
         await createAuthSession(customer);
         return { success: true, message: "Registration successful!" }
     }

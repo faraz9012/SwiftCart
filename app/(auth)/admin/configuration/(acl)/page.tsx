@@ -80,9 +80,10 @@ export function AccessControlList() {
         });
     }, []);
 
-    const handleCheckboxChange = (roleId: number, permissionId: number, isChecked: HTMLInputElement) => {
+    const handleCheckboxChange = (roleId: number, permissionId: number, isChecked: boolean) => {
         setSelectedPermissions((prevSelected) => {
             const updatedSelected = { ...prevSelected };
+            console.log(updatedSelected);
             if (!updatedSelected[roleId]) {
                 updatedSelected[roleId] = new Set();
             }
@@ -95,16 +96,21 @@ export function AccessControlList() {
         });
     };
 
-    const updateUserRoles = () => {
+    const updateUserRoles = async () => {
         const selectedPermissionsArray: { roleId: number, permissionId: number }[] = [];
         for (const roleId in selectedPermissions) {
             selectedPermissions[roleId].forEach((permissionId) => {
                 selectedPermissionsArray.push({ roleId: Number(roleId), permissionId });
             });
         }
-        console.log("Selected Permissions:", selectedPermissionsArray);
-        // Add your save logic here
-        updateUserRolesServerAction(selectedPermissionsArray);
+        console.log(selectedPermissionsArray);
+        const response = await updateUserRolesServerAction(selectedPermissionsArray);
+
+        if (response.success) 
+            toast.success(response.message);
+        else 
+            toast.error(response.message || "Something wen't wrong.");
+
     };
 
     return (
@@ -124,12 +130,17 @@ export function AccessControlList() {
                         <TableCell>{permission.name}</TableCell>
                         {userRoles.map((userRole) => {
                             const isChecked = selectedPermissions[userRole.id]?.has(permission.id) || false;
+                            let allowPermission = isChecked;
+
                             return (
                                 <TableCell key={userRole.id}>
                                     <Checkbox
                                         id={`${userRole.id}-${permission.id}`}
-                                        checked={isChecked}
-                                        onClick={(e:any)=> handleCheckboxChange(userRole.id, permission.id, e.target.ariaChecked)}
+                                        checked={allowPermission}
+                                        onClick={(e:any)=> {
+                                            allowPermission = !allowPermission;
+                                            handleCheckboxChange(userRole.id, permission.id, allowPermission)
+                                        }}
                                     />
                                 </TableCell>
                             );
