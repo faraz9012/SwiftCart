@@ -12,9 +12,9 @@ const PermissionsContext = createContext<PermissionsContextType | undefined>(und
 
 const fetchPermissions = async (updatePermissions: (newPermissions: string[]) => void) => {
     try {
-        const userPermissions = await checkUserPermissions();
-        const userPermissionNames = userPermissions.map((permission: any) => permission.name);
-        updatePermissions(userPermissionNames);
+        const userPermissions = (await checkUserPermissions()).map((permission: any) => permission.name);
+        console.log("On load: ",userPermissions);
+        updatePermissions(userPermissions);
     } catch (error) {
         console.error("Error fetching permissions:", error);
     }

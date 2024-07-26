@@ -3,7 +3,6 @@ import { Poppins } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { Toaster } from 'sonner';
-import { PermissionsProvider } from "@/contexts/permissions-context";
 
 const poppins = Poppins({
   subsets: ['latin'],
@@ -46,9 +45,7 @@ export default function RootLayout({
           disableTransitionOnChange
           storageKey="Swift-Cart">
           <Toaster richColors position="top-center" />
-          <PermissionsProvider>
             {children}
-          </PermissionsProvider>
         </ThemeProvider>
       </body>
     </html>

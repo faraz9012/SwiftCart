@@ -42,7 +42,7 @@ export async function updateUserRolesServerAction(selectedPermissionsArray: { ro
         const updatedPermissions = await checkUserPermissions();
 
         // Revalidate the path to ensure the UI updates
-        revalidatePath("/admin/");
+        revalidatePath("/admin/", "layout");
 
         return { success: true, message: "Permissions updated successfully.",updatedPermissions};
     } catch (error) {

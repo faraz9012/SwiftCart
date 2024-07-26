@@ -105,10 +105,9 @@ export function AccessControlList() {
                 selectedPermissionsArray.push({ roleId: Number(roleId), permissionId });
             });
         }
-        console.log(selectedPermissionsArray);
+
         const response:any = await updateUserRolesServerAction(selectedPermissionsArray);
         let updatedPermissionNames = response.updatedPermissions.map((permission: any) => permission.name);
-
 
         if (response.success) {
             toast.success(response.message);

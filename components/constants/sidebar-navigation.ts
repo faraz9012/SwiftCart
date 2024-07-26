@@ -22,29 +22,20 @@ export const SIDEBAR_NAVIGATION: SidebarNavigation[] = [
         icon: Folders,
         title: "Categories",
         route: "/admin/category",
-        permissions: [
-            Permissions.AccessAdminPanel,
-            Permissions.ManageCategories
-        ]
+        permissions: [Permissions.ManageCategories]
     },
     {
         id: 'Products',
         icon: Package,
         title: "Products",
         route: "/admin/product",
-        permissions: [
-            Permissions.AccessAdminPanel,
-            Permissions.ManageProducts
-        ]
+        permissions: [Permissions.ManageProducts]
     },
     {
         id: 'Orders',
         icon: ShoppingCart,
         title: "Orders",
         route: "/admin/order",
-        permissions: [
-            Permissions.AccessAdminPanel,
-            Permissions.ManageOrders
-        ]
+        permissions: [Permissions.ManageOrders]
     },
 ];
