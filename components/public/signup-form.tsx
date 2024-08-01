@@ -1,6 +1,5 @@
 'use client';
 
-import Link from "next/link";
 import { useRouter } from 'next/navigation';
 import { useForm } from "react-hook-form";
 
@@ -53,11 +52,11 @@ export default function SignUp() {
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
         const response = await Register(values);
-        if(response) {
+        if (response) {
             if (response.success) {
                 toast.success(response.message);
                 router.push("/");
-    
+
             }
             else {
                 toast.error(response?.message);
@@ -65,100 +64,82 @@ export default function SignUp() {
         }
     }
     return (
-        <>
-            <div className="mx-auto grid p-4 gap-6">
-                <div className="grid gap-2 text-center">
-                    <h1 className="text-3xl font-bold">Let&apos;s create you an account</h1>
-                    <p className="text-balance text-muted-foreground">
-                        It&apos;ll just take a few seconds and you&apos;ll be all set
-                    </p>
-                </div>
-
-                <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4" autoComplete="on">
-                        <div className="grid gap-4">
-                            <div className="grid lg:grid-cols-2 gap-2">
-                                <div className="grid gap-2">
-                                    <FormField
-                                        control={form.control}
-                                        name="firstName"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>First name</FormLabel>
-                                                <FormControl>
-                                                    <Input type="text" placeholder="John" {...field} autoComplete="firstName" />
-                                                </FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
-                                </div>
-                                <div className="grid gap-2">
-                                    <FormField
-                                        control={form.control}
-                                        name="lastName"
-                                        render={({ field }) => (
-                                            <FormItem>
-                                                <FormLabel>Last name</FormLabel>
-                                                <FormControl>
-                                                    <Input type="text" placeholder="Smith" {...field} autoComplete="lastName" />
-                                                </FormControl>
-                                                <FormMessage />
-                                            </FormItem>
-                                        )}
-                                    />
-                                </div>
-                            </div>
-                            <div className="grid gap-2">
-                                <FormField
-                                    control={form.control}
-                                    name="email"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Email</FormLabel>
-                                            <FormControl>
-                                                <Input type="email" placeholder="admin@yourstore.com" {...field} autoComplete="email" />
-                                            </FormControl>
-                                            <FormDescription className="text-xs">
-                                                We&apos;ll never share your email with anyone else.
-                                            </FormDescription>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                            </div>
-                            <div className="grid gap-2">
-                                <FormField
-                                    control={form.control}
-                                    name="password"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel className="flex justify-between">
-                                                Password
-                                            </FormLabel>
-                                            <FormControl>
-                                                <Input type="password" {...field} autoComplete="password" />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-
-                                    )}
-                                />
-                            </div>
-                            <Button type="submit" className="w-full">
-                                Register
-                            </Button>
+        <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4" autoComplete="on">
+                <div className="grid gap-4">
+                    <div className="grid lg:grid-cols-2 gap-2">
+                        <div className="grid gap-2">
+                            <FormField
+                                control={form.control}
+                                name="firstName"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>First name</FormLabel>
+                                        <FormControl>
+                                            <Input type="text" placeholder="John" {...field} autoComplete="firstName" />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
                         </div>
-                    </form>
-                </Form>
+                        <div className="grid gap-2">
+                            <FormField
+                                control={form.control}
+                                name="lastName"
+                                render={({ field }) => (
+                                    <FormItem>
+                                        <FormLabel>Last name</FormLabel>
+                                        <FormControl>
+                                            <Input type="text" placeholder="Smith" {...field} autoComplete="lastName" />
+                                        </FormControl>
+                                        <FormMessage />
+                                    </FormItem>
+                                )}
+                            />
+                        </div>
+                    </div>
+                    <div className="grid gap-2">
+                        <FormField
+                            control={form.control}
+                            name="email"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Email</FormLabel>
+                                    <FormControl>
+                                        <Input type="email" placeholder="admin@yourstore.com" {...field} autoComplete="email" />
+                                    </FormControl>
+                                    <FormDescription className="text-xs">
+                                        We&apos;ll never share your email with anyone else.
+                                    </FormDescription>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+                    <div className="grid gap-2">
+                        <FormField
+                            control={form.control}
+                            name="password"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel className="flex justify-between">
+                                        Password
+                                    </FormLabel>
+                                    <FormControl>
+                                        <Input type="password" {...field} autoComplete="password" />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
 
-                <div className="text-center text-sm">
-                    Already have an account?{" "}
-                    <Link href="/login" className="underline">
-                        Sign in
-                    </Link>
+                            )}
+                        />
+                    </div>
+                    <Button type="submit" className="w-full">
+                        Register
+                    </Button>
                 </div>
-            </div>
-        </>
+            </form>
+        </Form>
     )
 }

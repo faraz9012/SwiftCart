@@ -53,77 +53,59 @@ export default function SignIn() {
         }
     }
     return (
-        <>
-            <div className="mx-auto grid p-4 gap-6">
-                <div className="grid gap-2 text-center">
-                    <h1 className="text-3xl font-bold">Login</h1>
-                    <p className="text-balance text-muted-foreground">
-                        Enter your email below to login to your account
-                    </p>
+        <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4" autoComplete="on">
+                <div className="grid gap-4">
+                    <div className="grid gap-2">
+                        <FormField
+                            control={form.control}
+                            name="email"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Email</FormLabel>
+                                    <FormControl>
+                                        <Input type="email" placeholder="admin@yourstore.com" {...field} autoComplete="on" />
+                                    </FormControl>
+                                    <FormDescription>
+                                        We&apos;ll never share your email with anyone else.
+                                    </FormDescription>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                    </div>
+                    <div className="grid gap-2">
+                        <FormField
+                            control={form.control}
+                            name="password"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel className="flex justify-between">
+                                        Password
+                                    </FormLabel>
+                                    <FormControl>
+                                        <Input type="password" {...field} autoComplete="on" />
+                                    </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+
+                            )}
+                        />
+                    </div>
+                    <div className="md:flex md:justify-start md:items-center text-sm ">
+                        <span>Having trouble logging in?&nbsp;</span>
+                        <Link
+                            href="/forgot-password"
+                            className="underline"
+                        >
+                            Forgot your password?
+                        </Link>
+                    </div>
+                    <Button type="submit" className="w-full">
+                        Login
+                    </Button>
                 </div>
-
-                <Form {...form}>
-                    <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4" autoComplete="on">
-                        <div className="grid gap-4">
-                            <div className="grid gap-2">
-                                <FormField
-                                    control={form.control}
-                                    name="email"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel>Email</FormLabel>
-                                            <FormControl>
-                                                <Input type="email" placeholder="admin@yourstore.com" {...field} autoComplete="on" />
-                                            </FormControl>
-                                            <FormDescription>
-                                                We&apos;ll never share your email with anyone else.
-                                            </FormDescription>
-                                            <FormMessage />
-                                        </FormItem>
-                                    )}
-                                />
-                            </div>
-                            <div className="grid gap-2">
-                                <FormField
-                                    control={form.control}
-                                    name="password"
-                                    render={({ field }) => (
-                                        <FormItem>
-                                            <FormLabel className="flex justify-between">
-                                                Password
-                                            </FormLabel>
-                                            <FormControl>
-                                                <Input type="password" {...field} autoComplete="on" />
-                                            </FormControl>
-                                            <FormMessage />
-                                        </FormItem>
-
-                                    )}
-                                />
-                            </div>
-                            <div className="md:flex md:justify-start md:items-center text-sm ">
-                                <span>Having trouble logging in?&nbsp;</span>
-                                <Link
-                                    href="/forgot-password"
-                                    className="underline"
-                                >
-                                    Forgot your password?
-                                </Link>
-                            </div>
-                            <Button type="submit" className="w-full">
-                                Login
-                            </Button>
-                        </div>
-                    </form>
-                </Form>
-
-                <div className="text-center text-sm">
-                    Don&apos;t have an account?{" "}
-                    <Link href="/register" className="underline">
-                        Sign up
-                    </Link>
-                </div>
-            </div>
-        </>
+            </form>
+        </Form>
     )
 }
