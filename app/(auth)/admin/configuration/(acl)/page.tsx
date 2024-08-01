@@ -85,7 +85,6 @@ export function AccessControlList() {
     const handleCheckboxChange = (roleId: number, permissionId: number, isChecked: boolean) => {
         setSelectedPermissions((prevSelected) => {
             const updatedSelected = { ...prevSelected };
-            console.log(updatedSelected);
             if (!updatedSelected[roleId]) {
                 updatedSelected[roleId] = new Set();
             }
@@ -141,6 +140,7 @@ export function AccessControlList() {
                                     <Checkbox
                                         id={`${userRole.id}-${permission.id}`}
                                         checked={allowPermission}
+                                        aria-label={`Allow ${permission.systemName} for ${userRole.systemName}`}
                                         onClick={(e:any)=> {
                                             allowPermission = !allowPermission;
                                             handleCheckboxChange(userRole.id, permission.id, allowPermission)

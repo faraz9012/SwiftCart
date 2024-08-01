@@ -76,7 +76,7 @@ export default function SignIn() {
                                                 <Input type="email" placeholder="admin@yourstore.com" {...field} autoComplete="on" />
                                             </FormControl>
                                             <FormDescription>
-                                                We'll never share your email with anyone else.
+                                                We&apos;ll never share your email with anyone else.
                                             </FormDescription>
                                             <FormMessage />
                                         </FormItem>

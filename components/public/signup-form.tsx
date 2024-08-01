@@ -68,9 +68,9 @@ export default function SignUp() {
         <>
             <div className="mx-auto grid p-4 gap-6">
                 <div className="grid gap-2 text-center">
-                    <h1 className="text-3xl font-bold">Let’s create you an account</h1>
+                    <h1 className="text-3xl font-bold">Let&apos;s create you an account</h1>
                     <p className="text-balance text-muted-foreground">
-                        It'll just take a few seconds and you'll be all set
+                        It&apos;ll just take a few seconds and you&apos;ll be all set
                     </p>
                 </div>
 
@@ -120,7 +120,7 @@ export default function SignUp() {
                                                 <Input type="email" placeholder="admin@yourstore.com" {...field} autoComplete="email" />
                                             </FormControl>
                                             <FormDescription className="text-xs">
-                                                We'll never share your email with anyone else.
+                                                We&apos;ll never share your email with anyone else.
                                             </FormDescription>
                                             <FormMessage />
                                         </FormItem>

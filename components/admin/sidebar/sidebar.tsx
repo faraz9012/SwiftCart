@@ -50,25 +50,9 @@ const Sidebar = ({ children }: { children: React.ReactNode }) => {
   return (
     // <div className="flex min-h-screen w-full flex-col">
     <>
-      <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col border-r bg-background sm:flex">
+      <aside className="fixed inset-y-0 left-0 z-10 hidden w-14 flex-col  border-r bg-background sm:flex">
         <nav className="flex flex-col items-center gap-4 px-2 sm:py-5" title="sidebar">
           <SideNavLink />
-        </nav>
-        <nav className="mt-auto flex flex-col items-center gap-4 px-2 sm:py-5">
-          <TooltipProvider>
-            <Tooltip>
-              <TooltipTrigger asChild>
-                <Link
-                  href="/admin/configuration"
-                  className={`flex size-9 items-center justify-center rounded-full text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8 ${pathname === "/admin/settings" ? "bg-black text-white dark:bg-slate-200 dark:text-gray-950" : ""}`}
-                >
-                  <Settings className="h-5 w-5" />
-                  <span className="sr-only">Configuration</span>
-                </Link>
-              </TooltipTrigger>
-              <TooltipContent side="right">Configuration</TooltipContent>
-            </Tooltip>
-          </TooltipProvider>
         </nav>
       </aside>
       <div className="flex flex-col sm:gap-4 sm:py-4 sm:pl-14">

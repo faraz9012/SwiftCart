@@ -13,8 +13,8 @@ import {
 
 import { SIDEBAR_NAVIGATION, SidebarNavigation } from "../../constants/sidebar-navigation";
 import Logo from "@/components/shared/logo";
-import TransitionLink from "@/components/shared/transition-link";
 import { usePermissions } from "@/contexts/permissions-context";
+import Link from "next/link";
 
 export default function SideNavLink() {
   const pathname = usePathname();
@@ -45,13 +45,13 @@ export default function SideNavLink() {
               <TooltipProvider key={item.id}>
                 <Tooltip>
                   <TooltipTrigger asChild>
-                    <TransitionLink
+                    <Link
                       href={item.route}
                       className={`flex size-9 items-center justify-center rounded-full text-muted-foreground transition-colors hover:text-foreground md:h-8 md:w-8 ${pathname === item.route ? "bg-black hover:text-white text-white dark:bg-slate-200 dark:text-gray-950 dark:hover:text-gray-950" : ""}`}
                     >
                       {item.icon && <item.icon className="size-5" />}
                       <span className="sr-only">{item.icon && item.title}</span>
-                    </TransitionLink>
+                    </Link>
                   </TooltipTrigger>
                   <TooltipContent side="right">{item.title}</TooltipContent>
                 </Tooltip>

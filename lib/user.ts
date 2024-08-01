@@ -1,3 +1,6 @@
+import { cache } from 'react';
+import { unstable_cache as nextCache } from 'next/cache';
+
 import sql from 'better-sqlite3';
 
 const db = sql('SwiftCart.db');
@@ -9,15 +12,15 @@ export function createUser({ firstName, lastName, email, hashedPassword, custome
         .run(firstName, lastName, email.toLowerCase(), hashedPassword, customerCreatedTime, customerCreatedTime);
 
     return result.lastInsertRowid;
-}
+};
 
-export function updateUserRole(userId:number | bigint, roleId:number) {
+export function updateUserRole(userId: number | bigint, roleId: number) {
     return db.prepare('INSERT INTO UserRoleMapping (user_id, role_id) VALUES (?, ?);').run(userId, roleId)
-}
+};
 
 export function getUserByEmail(email: string) {
     return db.prepare('SELECT * FROM User WHERE email = ?').get(email)
-}
+};
 
 export function getPermissionsByUserId(id: number | bigint) {
     return db.prepare(`
@@ -29,46 +32,60 @@ export function getPermissionsByUserId(id: number | bigint) {
     WHERE u.id = ?;
 
     `).all(id)
-}
+};
 
-export async function getAllPermissions() {
-    return db.prepare(`
+export const getAllPermissions = nextCache(
+    cache(async function getAllPermissions() {
+        return db.prepare(`
         SELECT * FROM PermissionRecord;
     `).all()
-}
+    }), ['allPermissions']
+);
 
-export async function getAllPermissionsMapping() {
-    return db.prepare(`
-        SELECT * FROM PermissionRecordMapping;
-    `).all()
+export const getAllPermissionsMapping = nextCache(
+    cache(async function getAllPermissionsMapping() {
+        return db.prepare(`
+            SELECT * FROM PermissionRecordMapping;
+        `).all()
+    }), ['allPermissionsMapping'], {
+    tags: ['allPermissionsMapping']
 }
+);
 
-export async function getAllUserRoles() {
-    return db.prepare(`
+export const getAllUserRoles = nextCache(
+    cache(async function getAllUserRoles() {
+        return db.prepare(`
         SELECT * FROM UserRole;
     `).all()
-}
+    }), ['allUserRoles'], {
+    tags: ['allUserRoles']
+    }
+);
 
-export async function getAllPermissionByRoleId(roleId:number) {
-    return db.prepare(`
+export const getAllPermissionByRoleId = nextCache(
+    cache(async function getAllPermissionByRoleId(roleId: number) {
+        return db.prepare(`
         SELECT * FROM PermissionRecordMapping WHERE role_id=?;
     `).all(roleId)
-}
+    }), ['allPermissionByRoleId'], {
+        tags: ['allPermissionByRoleId']
+        }
+    );
 
-export async function updateUserRolesPermission(permissionId:number, roleId:number) {
+export async function updateUserRolesPermission(permissionId: number, roleId: number) {
     return db.prepare(`
         INSERT INTO PermissionRecordMapping (permission_id, role_id) VALUES (?,?);
     `).run(permissionId, roleId)
-}
+};
 
-export async function deleteUserRolesPermissionMapping(permissionId:number, roleId:number) {
+export async function deleteUserRolesPermissionMapping(permissionId: number, roleId: number) {
     return db.prepare(`
         DELETE FROM PermissionRecordMapping WHERE permission_id = ? AND role_id = ?;
     `).run(permissionId, roleId)
-}
+};
 
 export async function deleteAllPermissionsByRoleId(roleId: number) {
     return db.prepare(`
         DELETE FROM PermissionRecordMapping WHERE role_id = ?;
     `).run(roleId);
-}
+};

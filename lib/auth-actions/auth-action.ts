@@ -15,8 +15,7 @@ export async function Register({ firstName, lastName, email, password }: { first
         const customer = createUser({ firstName, lastName, email, hashedPassword, customerCreatedTime });
 
         // set the registered role
-        let a = await updateUserRole(customer, UserRoles.Registered)
-        console.log(a);
+        await updateUserRole(customer, UserRoles.Registered)
 
         await createAuthSession(customer);
         return { success: true, message: "Registration successful!" }

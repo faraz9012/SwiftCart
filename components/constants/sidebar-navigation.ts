@@ -1,4 +1,4 @@
-import { Folders, Home, Package, ShoppingCart } from "lucide-react"
+import { Folders, Home, Package, ShoppingCart, Settings } from "lucide-react"
 import { Permissions } from "./user-roles"
 
 export interface SidebarNavigation {
@@ -37,5 +37,12 @@ export const SIDEBAR_NAVIGATION: SidebarNavigation[] = [
         title: "Orders",
         route: "/admin/order",
         permissions: [Permissions.ManageOrders]
+    },
+    {
+        id: 'Configuration',
+        icon: Settings,
+        title: "Configuration",
+        route: "/admin/configuration",
+        permissions: [Permissions.ManageConfigurations]
     },
 ];

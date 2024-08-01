@@ -97,7 +97,7 @@ export default function AddCategoryButton({ categories }: { categories: Category
                 <SheetHeader>
                     <SheetTitle>Create category</SheetTitle>
                     <SheetDescription>
-                        Make changes to your category here. Click save when you're done.
+                        Make changes to your category here. Click save when you&apos;re done.
                     </SheetDescription>
                 </SheetHeader>
                 <Form {...form}>

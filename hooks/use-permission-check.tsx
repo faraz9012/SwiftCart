@@ -7,7 +7,10 @@ const hasPermission = (Component?: any, requiredPermissions?: any) => {
     const userPermissions = (await checkUserPermissions()).map((permission: any) => permission.name);
 
     for (let i = 0; i < requiredPermissions.length; i++) {
-      userPermissions.includes(requiredPermissions[i]) ? isUserPermitted = true : isUserPermitted = false;
+      if (userPermissions.includes(requiredPermissions[i])) {
+        isUserPermitted = true;
+        break;
+      }
     }
     
     // Check if user has rights then return boolean value (For UI purposes)

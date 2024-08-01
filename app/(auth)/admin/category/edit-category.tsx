@@ -83,7 +83,7 @@ export function EditCategoryButton({ categoryToEdit }: { categoryToEdit: Categor
       <SheetContent side="fullScreen">
         <SheetHeader>
           <SheetTitle>Edit: {categoryToEdit.name}</SheetTitle>
-          <SheetDescription>Make changes to your category here. Click save when you're done.</SheetDescription>
+          <SheetDescription>Make changes to your category here. Click save when you&apos;re done.</SheetDescription>
         </SheetHeader>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 mt-4" autoComplete="on">

@@ -25,4 +25,4 @@ function ConfigurationPage() {
   )
 }
 
-export default hasPermission(ConfigurationPage, Permissions.ManageConfigurations);
+export default hasPermission(ConfigurationPage, [Permissions.ManageConfigurations]);

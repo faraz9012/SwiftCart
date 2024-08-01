@@ -19,7 +19,7 @@ export type Category = {
   updatedOn?: string
 }
 
-const useParentCategoryName = (categories: Category[], parentCategoryId: number) => {
+const getParentCategoryName = (categories: Category[], parentCategoryId: number) => {
   const parentCategory = categories.find(category => category.id === parentCategoryId);
   return parentCategory ? parentCategory.name : "---";
 };
@@ -79,7 +79,7 @@ export const columns = (categories:any): ColumnDef<Category>[] => [
     },
     cell: ({ row }) => {
       const parentCategoryId = parseFloat(row.getValue("parentCategoryId"));
-      const parentCategoryName = useParentCategoryName(categories, parentCategoryId);
+      const parentCategoryName = getParentCategoryName(categories, parentCategoryId);
       return <div className="font-medium">{parentCategoryName}</div>;
     },
   },
