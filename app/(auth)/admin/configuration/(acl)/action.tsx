@@ -1,6 +1,6 @@
 "use server"
 
-import { revalidatePath } from 'next/cache';
+import { revalidatePath, revalidateTag } from 'next/cache';
 import { getAllPermissions, getAllPermissionsMapping, getAllUserRoles, updateUserRolesPermission, deleteAllPermissionsByRoleId } from "@/lib/user";
 import { checkUserPermissions } from '@/lib/auth-actions/auth-action';
 
@@ -16,33 +16,26 @@ export async function getAllPermissionsMappingServerAction() {
     return await getAllPermissionsMapping();
 }
 
-export async function updateUserRolesServerAction(selectedPermissionsArray: { roleId: number, permissionId: number }[]) {
+export async function updateUserRolesServerAction(selectedPermissionsArray: { roleId: number, permissionIds: number[] }[]) {
+    
     // Group selected permissions by roleId
-    const selectedPermissionsByRole = selectedPermissionsArray.reduce((acc, { roleId, permissionId }) => {
-        if (!acc[roleId]) {
-            acc[roleId] = [];
-        }
-        acc[roleId].push(permissionId);
-        return acc;
-    }, {} as { [key: number]: number[] });
-
     try {
-        for (const roleId in selectedPermissionsByRole) {
-            // Remove all existing permissions for the role
-            await deleteAllPermissionsByRoleId(Number(roleId));
-
-            // Add new permissions
-            const permissionIds = selectedPermissionsByRole[roleId];
-            for (const permissionId of permissionIds) {
-                await updateUserRolesPermission(permissionId, Number(roleId));
+        selectedPermissionsArray.forEach(async (selectedPermission)=> {
+            await deleteAllPermissionsByRoleId(selectedPermission.roleId);
+            
+            if (selectedPermission.permissionIds.length > 0) {
+                selectedPermission.permissionIds.forEach(async (permission) => {
+                    await updateUserRolesPermission(permission, selectedPermission.roleId);
+                });
             }
-        }
+
+        });
 
         // Fetch updated permissions
         const updatedPermissions = await checkUserPermissions();
 
         // Revalidate the path to ensure the UI updates
-        revalidatePath("/admin/", "layout");
+        revalidateTag("allPermissionsMapping");
 
         return { success: true, message: "Permissions updated successfully.",updatedPermissions};
     } catch (error) {

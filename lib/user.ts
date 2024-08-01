@@ -2,6 +2,8 @@ import { cache } from 'react';
 import { unstable_cache as nextCache } from 'next/cache';
 
 import sql from 'better-sqlite3';
+import { Permission, PermissionMapping, UserRole } from "@/components/constants/user-roles";
+
 
 const db = sql('SwiftCart.db');
 
@@ -35,32 +37,37 @@ export function getPermissionsByUserId(id: number | bigint) {
 };
 
 export const getAllPermissions = nextCache(
-    cache(async function getAllPermissions() {
-        return db.prepare(`
+    cache(async function getAllPermissions(): Promise<Permission[]> {
+        const permissions =  db.prepare(`
         SELECT * FROM PermissionRecord;
     `).all()
+    return permissions as Permission[];
     }), ['allPermissions']
 );
 
 export const getAllPermissionsMapping = nextCache(
-    cache(async function getAllPermissionsMapping() {
-        return db.prepare(`
+    cache(async function getAllPermissionsMapping(): Promise<PermissionMapping[]> {
+        const permissionMappings = db.prepare(`
             SELECT * FROM PermissionRecordMapping;
         `).all()
+        return permissionMappings as PermissionMapping[]
     }), ['allPermissionsMapping'], {
     tags: ['allPermissionsMapping']
 }
 );
 
 export const getAllUserRoles = nextCache(
-    cache(async function getAllUserRoles() {
-        return db.prepare(`
+    cache(async function getAllUserRoles(): Promise<UserRole[]> {
+      const roles = db.prepare(`
         SELECT * FROM UserRole;
-    `).all()
-    }), ['allUserRoles'], {
-    tags: ['allUserRoles']
+      `).all();
+      return roles as UserRole[];
+    }), 
+    ['allUserRoles'], 
+    {
+      tags: ['allUserRoles']
     }
-);
+  );
 
 export const getAllPermissionByRoleId = nextCache(
     cache(async function getAllPermissionByRoleId(roleId: number) {
