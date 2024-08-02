@@ -154,6 +154,30 @@ const PermissionRecordMapping = [
    },
 ]
 
+const dummyProducts = [
+   {
+      name: 'Playstation 5 Digital Edition',
+      slug: 'playstation-5-digital-edition',
+      shortDescription: `The PlayStation 5 (PS5) is a home video game console developed by Sony Interactive Entertainment.`,
+      longDescription: 'The PS5 is part of the ninth generation of video game consoles, along with Microsoft\'s Xbox Series X/S consoles, which were released in the same month.',
+      price: 399,
+      categoryId: 2,
+      published: 1,
+      createdOnUTC: '2023-11-23 09:25:38.0000000',
+      isDeleted: 0
+   },
+];
+
+const dummyPictures = [
+   {
+      name: 'Playstation 5 Digital Edition',
+      mimeType: 'image/webp',
+      srcAttribute: `/images/sample-images/gaming-console.webp`,
+      altAttribute: 'gaming-console',
+      titleAttribute: 'Playstan 5 console'
+   },
+];
+
 //#endregion
 
 //#region Create table
@@ -238,6 +262,55 @@ CREATE TABLE IF NOT EXISTS PermissionRecordMapping (
    FOREIGN KEY (permission_id) REFERENCES PermissionRecord(Id),
    FOREIGN KEY (role_id) REFERENCES UserRole(Id)
  );`
+);
+
+// Products
+db.exec(`
+   CREATE TABLE IF NOT EXISTS Product (
+     id INTEGER PRIMARY KEY AUTOINCREMENT,
+     name TEXT NOT NULL UNIQUE,
+     slug TEXT NOT NULL UNIQUE,
+     shortDescription TEXT NOT NULL,
+     longDescription TEXT NOT NULL,
+     price DECIMAL(10,5) NOT NULL DEFAULT 0, 
+     published BOOLEAN NOT NULL,
+     createdOnUTC DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+     updatedOnUTC DATETIME DEFAULT NULL,
+     isDeleted BOOLEAN NOT NULL DEFAULT 0
+  )`
+);
+
+// Product Category Mapping
+db.exec(`
+   CREATE TABLE IF NOT EXISTS ProductCategoryMapping (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      category_id INTEGER NOT NULL,
+      product_id INTEGER NOT NULL,
+      FOREIGN KEY (category_id) REFERENCES Category(Id),
+      FOREIGN KEY (product_id) REFERENCES Product(Id)
+    );`
+);
+
+// Pictures
+db.exec(`
+   CREATE TABLE IF NOT EXISTS Picture (
+     id INTEGER PRIMARY KEY AUTOINCREMENT,
+     mimeType TEXT,
+     srcAttribute TEXT,
+     altAttribute TEXT,
+     titleAttribute TEXT
+  );`
+);
+
+// Product Pictures Mapping
+db.exec(`
+   CREATE TABLE IF NOT EXISTS ProductPictureMapping (
+     id INTEGER PRIMARY KEY AUTOINCREMENT,
+     product_id INTEGER NOT NULL,
+     picture_id INTEGER NOT NULL,
+     FOREIGN KEY (product_id) REFERENCES Product(Id),
+     FOREIGN KEY (picture_id) REFERENCES Picture(Id)
+  )`
 );
 //#endregion
 
@@ -363,14 +436,66 @@ async function initPermissionRecordMappingData() {
    }
 }
 
+async function initProductData() {
+   const sql = `
+  INSERT INTO Product (
+    name,
+    slug,
+    shortDescription,
+    longDescription,
+    price,
+    published,
+    createdOnUTC,
+    isDeleted
+  )
+  VALUES (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP,?)  -- Use database function
+`;
+
+   const stmt = db.prepare(sql);
+
+   for (const product of dummyProducts) {
+      const data = [
+         product.name,
+         product.slug,
+         product.shortDescription,
+         product.longDescription,
+         product.price,
+         product.published,
+         product.isDeleted
+      ];
+      await stmt.run(data);
+   }
+}
+
+async function initPictureData() {
+   const sql = `
+   INSERT INTO Picture (mimeType, srcAttribute, altAttribute, titleAttribute)
+   VALUES (?, ?, ?, ?)
+   `;
+
+   const stmt = db.prepare(sql);
+
+   for (const picture of dummyPictures) {
+      const data = [
+         picture.mimeType, 
+         picture.srcAttribute,
+         picture.altAttribute,
+         picture.titleAttribute
+      ];
+      await stmt.run(data);
+   }
+}
 //#endregion
 
 //#region Initate method to populate table
 
 initCategoryData();
+initProductData();
 initUserData();
 initUserRoleData();
-initUserRoleMappingData();
 initPermissionRecordData();
+initPictureData();
+
+initUserRoleMappingData();
 initPermissionRecordMappingData();
 //#endregion
