@@ -2,13 +2,13 @@
 
 import { bulkDeleteCategories, deleteCategory, getCategories, getCategoryById, getCategoryByName, getCategoryBySlug, insertCategory, updateCategory } from '@/lib/category';
 import { generateSlug } from '@/lib/common-methods';
-import { revalidatePath } from 'next/cache';
+import { revalidateTag } from 'next/cache';
 
 export async function deleteCategories(id: number[]) {
     if (!id) return;
     try {
         await bulkDeleteCategories(id);
-        revalidatePath("/admin/category");
+        revalidateTag("allCategories");
         return { success: true, message: "Category(s) deleted" }
     } catch (error) {
         return { success: true, message: `Something went wrong ${error}` }
@@ -20,7 +20,7 @@ export async function deleteCategoryById(id: number) {
     if (!id) return;
     try {
         await deleteCategory(id);
-        revalidatePath("/admin/category");
+        revalidateTag("allCategories");
         return { success: true, message: "Category(s) deleted" }
     } catch (error) {
         return { success: true, message: `Something went wrong ${error}` }
@@ -41,7 +41,7 @@ export async function createCategory({ name, desc, image, parentCategoryId, publ
 
         if (!category) return { success: false, message: "An error occured! Please try again." }
 
-        revalidatePath("/admin/category");
+        revalidateTag("allCategories");
 
         return { success: true, message: "New category created!" }
     }
@@ -82,7 +82,7 @@ export async function editCategory({ id, name, desc, slug, image, parentCategory
 
         if (!category) return { success: false, message: "An error occured! Please try again." }
 
-        revalidatePath("/admin/category");
+        revalidateTag("allCategories");
 
         return { success: true, message: "Category updated!" }
     }
