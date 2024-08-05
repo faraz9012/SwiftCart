@@ -1,30 +1,33 @@
 "use client"
 
+import { ArrowUpDown } from "lucide-react";
+
 import { ColumnDef } from "@tanstack/react-table";
 import { Button } from "@/components/ui/button";
-import { Checkbox } from "@/components/ui/checkbox"
+import { Checkbox } from "@/components/ui/checkbox";
+import { Badge } from "@/components/ui/badge";
 
-import { ArrowUpDown } from "lucide-react";
 import {RowActions} from "./row-actions";
 
-export type Category = {
+export type Product = {
   id: number
   name: string
   slug?: string
-  description?: string
-  image?: string
-  parentCategoryId: number
+  shortDescription?: string
+  longDescription?: string
+  price: number
   published: number
   createdOn: string
   updatedOn?: string
+  isDeleted: boolean
 }
 
-const getParentCategoryName = (categories: Category[], parentCategoryId: number) => {
-  const parentCategory = categories.find(category => category.id === parentCategoryId);
-  return parentCategory ? parentCategory.name : "---";
-};
+export enum ProductStatus {
+  UnPublished = 0,
+  Published = 1
+}
 
-export const columns = (categories:any): ColumnDef<Category>[] => [
+export const columns = (products:any): ColumnDef<Product>[] => [
   {
     id: "select",
     header: ({ table }) => (
@@ -65,42 +68,40 @@ export const columns = (categories:any): ColumnDef<Category>[] => [
     },
   },
   {
-    accessorKey: "parentCategoryId",
+    accessorKey: "price",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Parent category
+          Price
           <ArrowUpDown className="ml-2 size-4" />
         </Button>
       )
     },
     cell: ({ row }) => {
-      const parentCategoryId = parseFloat(row.getValue("parentCategoryId"));
-      const parentCategoryName = getParentCategoryName(categories, parentCategoryId);
-      return <div className="font-medium">{parentCategoryName}</div>;
+      return <div className="font-medium ml-3">${row.original.price}</div>
     },
   },
   {
-    accessorKey: "published",
+    accessorKey: "isDeleted",
     header: ({ column }) => {
       return (
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
         >
-          Published
+          Status
           <ArrowUpDown className="ml-2 size-4" />
         </Button>
       )
     },
     cell: ({ row }) => {
-      const status = parseFloat(row.getValue("published"));
-      const formattedStatus = (status == 1) ? "Published" : "Unpublished"; 
+      const status = row.original.published;
+      const formattedStatus = (status == ProductStatus.Published) ? "Published" : "Unpublished"; 
  
-      return <div className="font-medium">{formattedStatus}</div>
+      return <Badge variant={status == ProductStatus.Published ? "default" : "destructive"}>{formattedStatus}</Badge>
     },
   },
   {

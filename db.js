@@ -9,7 +9,7 @@ const dummyCategories = [
       description: `Find the perfect devices to fit your personal and professional goals.`,
       image: '/images/sample-images/electronics.webp',
       parentCategoryId: 0,
-      published: 0,
+      published: 1,
       createdOnUTC: '2023-11-23 09:25:38.0000000',
       isDeleted: 0
    },
@@ -19,7 +19,7 @@ const dummyCategories = [
       description: `Dominate your living room with the power and performance of a home console.`,
       image: '/images/sample-images/gaming-console.webp',
       parentCategoryId: 1,
-      published: 0,
+      published: 1,
       createdOnUTC: '2023-11-23 09:25:38.0000000',
       isDeleted: 0
    },
@@ -161,6 +161,17 @@ const dummyProducts = [
       shortDescription: `The PlayStation 5 (PS5) is a home video game console developed by Sony Interactive Entertainment.`,
       longDescription: 'The PS5 is part of the ninth generation of video game consoles, along with Microsoft\'s Xbox Series X/S consoles, which were released in the same month.',
       price: 399,
+      categoryId: 2,
+      published: 1,
+      createdOnUTC: '2023-11-23 09:25:38.0000000',
+      isDeleted: 0
+   },
+   {
+      name: 'Xbox Series X',
+      slug: 'xbox-series-x',
+      shortDescription: `Xbox is a video gaming brand that consists of five home video game consoles, as well as applications (games)`,
+      longDescription: 'The fourth generation of Xbox models, simply named Xbox, includes the Xbox Series X and Xbox Series S that use an AMD 64-bit x86-64 CPU and GPU with up to 16 GB of memory.',
+      price: 499,
       categoryId: 2,
       published: 1,
       createdOnUTC: '2023-11-23 09:25:38.0000000',

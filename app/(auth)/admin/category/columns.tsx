@@ -6,6 +6,7 @@ import { Checkbox } from "@/components/ui/checkbox"
 
 import { ArrowUpDown } from "lucide-react";
 import {RowActions} from "./row-actions";
+import { Badge } from "@/components/ui/badge";
 
 export type Category = {
   id: number
@@ -19,6 +20,10 @@ export type Category = {
   updatedOn?: string
 }
 
+export enum CategoryStatus {
+  UnPublished = 0,
+  Published = 1
+}
 const getParentCategoryName = (categories: Category[], parentCategoryId: number) => {
   const parentCategory = categories.find(category => category.id === parentCategoryId);
   return parentCategory ? parentCategory.name : "---";
@@ -100,7 +105,7 @@ export const columns = (categories:any): ColumnDef<Category>[] => [
       const status = parseFloat(row.getValue("published"));
       const formattedStatus = (status == 1) ? "Published" : "Unpublished"; 
  
-      return <div className="font-medium">{formattedStatus}</div>
+      return <Badge variant={status == CategoryStatus.Published ? "default" : "destructive"}>{formattedStatus}</Badge>
     },
   },
   {

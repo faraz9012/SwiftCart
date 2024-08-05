@@ -1,10 +1,10 @@
 "use client";
 
-import { Category, columns } from './columns';
 import { DataTable } from "@/components/admin/data-table";
 import { toast } from 'sonner';
+import { columns, Product } from '@/app/(auth)/admin/product/columns';
 
-export default function ProductDataTable({ products }: { products: Category[] }) {
+export default async function ProductDataTable({ products }: { products: Product[] }) {
 
     return (
         <DataTable

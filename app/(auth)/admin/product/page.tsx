@@ -1,8 +1,12 @@
-import { DataTable } from "@/components/admin/data-table";
 import { Permissions } from "@/components/constants/user-roles";
 import hasPermission from "@/hooks/use-permission-check";
+import { Product } from '@/app/(auth)/admin/product/columns';
+import { getAllProducts } from "@/lib/product";
+import ProductDataTable from "./product-data-table";
 
-function ProductPage() {
+async function ProductPage() {
+  const products = await getAllProducts() as Product[];
+
   return (
     <div className="flex flex-1 flex-col gap-4 p-4 lg:gap-6 lg:p-6">
       <div className="">
@@ -12,9 +16,7 @@ function ProductPage() {
       <div
         className="mt-2"
       >
-        {/* <DataTable
-
-        /> */}
+        <ProductDataTable products={products} />
       </div>
     </div>
   );
