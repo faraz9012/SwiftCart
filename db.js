@@ -160,6 +160,7 @@ const dummyProducts = [
       slug: 'playstation-5-digital-edition',
       shortDescription: `The PlayStation 5 (PS5) is a home video game console developed by Sony Interactive Entertainment.`,
       longDescription: 'The PS5 is part of the ninth generation of video game consoles, along with Microsoft\'s Xbox Series X/S consoles, which were released in the same month.',
+      featuredImageId: 1,
       price: 399,
       categoryId: 2,
       published: 1,
@@ -171,6 +172,7 @@ const dummyProducts = [
       slug: 'xbox-series-x',
       shortDescription: `Xbox is a video gaming brand that consists of five home video game consoles, as well as applications (games)`,
       longDescription: 'The fourth generation of Xbox models, simply named Xbox, includes the Xbox Series X and Xbox Series S that use an AMD 64-bit x86-64 CPU and GPU with up to 16 GB of memory.',
+      featuredImageId: 2,
       price: 499,
       categoryId: 2,
       published: 1,
@@ -184,8 +186,15 @@ const dummyPictures = [
       name: 'Playstation 5 Digital Edition',
       mimeType: 'image/webp',
       srcAttribute: `/images/sample-images/gaming-console.webp`,
-      altAttribute: 'gaming-console',
+      altAttribute: 'Playstation 5 digital edition',
       titleAttribute: 'Playstan 5 console'
+   },
+   {
+      name: 'Xbox Series X',
+      mimeType: 'image/webp',
+      srcAttribute: `/images/sample-images/xbox-series-x.webp`,
+      altAttribute: 'Xbox Series X',
+      titleAttribute: 'Xbox Series X'
    },
 ];
 
@@ -283,6 +292,7 @@ db.exec(`
      slug TEXT NOT NULL UNIQUE,
      shortDescription TEXT NOT NULL,
      longDescription TEXT NOT NULL,
+     featuredPictureId INTEGER DEFAULT 0,
      price DECIMAL(10,5) NOT NULL DEFAULT 0, 
      published BOOLEAN NOT NULL,
      createdOnUTC DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -306,6 +316,7 @@ db.exec(`
 db.exec(`
    CREATE TABLE IF NOT EXISTS Picture (
      id INTEGER PRIMARY KEY AUTOINCREMENT,
+     name TEXT,
      mimeType TEXT,
      srcAttribute TEXT,
      altAttribute TEXT,
@@ -454,12 +465,13 @@ async function initProductData() {
     slug,
     shortDescription,
     longDescription,
+    featuredPictureId,
     price,
     published,
     createdOnUTC,
     isDeleted
   )
-  VALUES (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP,?)  -- Use database function
+  VALUES (?, ?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP,?)  -- Use database function
 `;
 
    const stmt = db.prepare(sql);
@@ -470,6 +482,7 @@ async function initProductData() {
          product.slug,
          product.shortDescription,
          product.longDescription,
+         product.featuredImageId,
          product.price,
          product.published,
          product.isDeleted
@@ -480,14 +493,15 @@ async function initProductData() {
 
 async function initPictureData() {
    const sql = `
-   INSERT INTO Picture (mimeType, srcAttribute, altAttribute, titleAttribute)
-   VALUES (?, ?, ?, ?)
+   INSERT INTO Picture (name, mimeType, srcAttribute, altAttribute, titleAttribute)
+   VALUES (?, ?, ?, ?, ?)
    `;
 
    const stmt = db.prepare(sql);
 
    for (const picture of dummyPictures) {
       const data = [
+         picture.name,
          picture.mimeType, 
          picture.srcAttribute,
          picture.altAttribute,

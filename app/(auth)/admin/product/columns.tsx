@@ -8,6 +8,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { Badge } from "@/components/ui/badge";
 
 import {RowActions} from "./row-actions";
+import Image from "next/image";
 
 export type Product = {
   id: number
@@ -15,6 +16,7 @@ export type Product = {
   slug?: string
   shortDescription?: string
   longDescription?: string
+  featuredPictureId: number
   price: number
   published: number
   createdOn: string
@@ -26,8 +28,11 @@ export enum ProductStatus {
   UnPublished = 0,
   Published = 1
 }
-
-export const columns = (products:any): ColumnDef<Product>[] => [
+const getProductFeaturedImage = (pictures: any[], featuredPictureId: number) => {
+  const featuredPicture = pictures.find(picture => picture.id === featuredPictureId);
+  return featuredPicture ? featuredPicture : "---";
+};
+export const columns = (pictures:any): ColumnDef<Product>[] => [
   {
     id: "select",
     header: ({ table }) => (
@@ -52,6 +57,22 @@ export const columns = (products:any): ColumnDef<Product>[] => [
     ),
     enableSorting: false,
     enableHiding: false,
+  },
+  {
+    accessorKey: "featuredPictureId",
+    header: () => {
+      return (
+        <Button
+          variant="ghost"
+        >
+          Picture
+        </Button>
+      )
+    },
+    cell: ({ row }) => {
+      const featuredImage:any = getProductFeaturedImage(pictures, row.original.featuredPictureId);
+      return <Image className="rounded-lg shadow-lg" src={featuredImage.srcAttribute} alt={featuredImage.altAttribute} title={featuredImage.titleAttribute} width={150} height={80} />
+    },
   },
   {
     accessorKey: "name",

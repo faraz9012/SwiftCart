@@ -17,3 +17,43 @@ export const getAllProducts = nextCache(
 export function getProductById(id: number) {
     return db.prepare(`SELECT * FROM Product WHERE id=? AND isDeleted=0`).get(id) as Promise<Product>;
 };
+
+export async function bulkDeleteProducts(id: number[]) {
+    for (const productId of id) {
+        const deleteStatement = db.prepare(`UPDATE Product SET isDeleted=1 WHERE id = ?`);
+        await deleteStatement.run(productId);
+    }
+};
+
+export async function deleteProduct(id: number) {
+    try {
+        const result = await db.prepare(`
+        UPDATE Product SET isDeleted=1 WHERE id = ?
+        `).run(id);
+
+        return result;
+    } catch (error) {
+        console.error("Error deleting Product:", error);
+    }
+};
+
+
+export async function deleteProductPictureMappingByProductId(id: number) {
+    try {
+        const result = await db.prepare(`
+        DELETE FROM ProductPictureMapping WHERE product_id = ?
+        `).run(id);
+
+        return result;
+    } catch (error) {
+        console.error("Error deleting product picture mapping:", error);
+    }
+};
+
+
+export async function bulkDeleteProductPictureMappingByProductId(id: number[]) {
+    for (const productId of id) {
+        const deleteStatement = db.prepare(`DELETE FROM ProductPictureMapping WHERE product_id = ?`);
+        await deleteStatement.run(productId);
+    }
+};
