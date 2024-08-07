@@ -1,3 +1,5 @@
+'use server';
+
 import { bulkDeleteProductPictureMappingByProductId, bulkDeleteProducts, deleteProduct, deleteProductPictureMappingByProductId } from "@/lib/product";
 import { revalidateTag } from "next/cache";
 
@@ -21,7 +23,7 @@ export async function deleteProductByIdServerAction(id: number) {
         await deleteProductPictureMappingByProductId(id);
         await deleteProduct(id);
         revalidateTag("allProducts");
-        
+
         return { success: true, message: "Product(s) deleted" }
     } catch (error) {
         return { success: true, message: `Something went wrong ${error}` }
