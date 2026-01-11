@@ -3,21 +3,29 @@ import UnauthorizedPage from '@/components/shared/unauthorized';
 
 const hasPermission = (Component?: any, requiredPermissions?: any) => {
   const WithPermission = async (props: any) => {
-    let isUserPermitted = false;
-    const userPermissions = (await checkUserPermissions()).map((permission: any) => permission.name);
+    const required = Array.isArray(requiredPermissions)
+      ? requiredPermissions
+      : [];
 
-    for (let i = 0; i < requiredPermissions.length; i++) {
-      if (userPermissions.includes(requiredPermissions[i])) {
-        isUserPermitted = true;
-        break;
-      }
+    if (required.length === 0) {
+      if (!Component) return true;
+      return <Component {...props} />;
     }
+
+    const userPermissions = (await checkUserPermissions()).map(
+      (permission: any) => permission.name
+    );
+    const isUserPermitted = required.some((permission) =>
+      userPermissions.includes(permission)
+    );
     
     // Check if user has rights then return boolean value (For UI purposes)
     if (!Component) return isUserPermitted;
 
-    // Show un-authorized page if user does not has rights for component
-    if (userPermissions.length === 0 || !isUserPermitted) return <UnauthorizedPage />;
+    // Show un-authorized page if user does not have rights for component
+    if (required.length > 0 && (userPermissions.length === 0 || !isUserPermitted)) {
+      return <UnauthorizedPage />;
+    }
 
     return <Component {...props} />;
   };

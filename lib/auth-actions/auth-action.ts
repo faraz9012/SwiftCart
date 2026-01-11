@@ -8,16 +8,31 @@ import { UserRoles } from "@/components/constants/user-roles";
 
 export async function Register({ firstName, lastName, email, password }: { firstName: string, lastName: string, email: string, password: string }) {
 
+    const normalizedEmail = email.trim().toLowerCase();
+    if (!normalizedEmail) {
+        return { success: false, message: "Email is required." }
+    }
+
     const hashedPassword = hashUserPassword(password);
     const customerCreatedTime = getUTCDateTime();
 
     try {
-        const customer = createUser({ firstName, lastName, email, hashedPassword, customerCreatedTime });
+        const createResult = createUser({
+            firstName,
+            lastName,
+            email: normalizedEmail,
+            hashedPassword,
+            customerCreatedTime
+        });
+
+        if (!createResult || createResult.changes === 0) {
+            return { success: false, message: "It seems like an account with this email already exists." }
+        }
 
         // set the registered role
-        await updateUserRole(customer, UserRoles.Registered)
+        await updateUserRole(createResult.id, UserRoles.Registered)
 
-        await createAuthSession(customer);
+        await createAuthSession(createResult.id);
         return { success: true, message: "Registration successful!" }
     }
     catch (error: any) {
@@ -65,6 +80,7 @@ export async function LogoutUser() {
 
 export async function checkUserPermissions() {
     const userId:any = (await verifyAuth())?.user?.id;
+    if (!userId) return [];
 
     const permissions = await getPermissionsByUserId(userId);
 
