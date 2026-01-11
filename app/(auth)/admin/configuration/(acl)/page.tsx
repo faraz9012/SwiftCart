@@ -3,7 +3,7 @@ import AclGrid from "./acl-grid";
 import { Permission, PermissionMapping, UserRole } from "@/components/constants/user-roles";
 
 import { Table, TableCaption } from "@/components/ui/table";
-export async function AccessControlList() {
+export default async function AccessControlList() {
     const userRoles: UserRole[] = await getAllUserRoles();
     const permissions: Permission[] = await getAllPermissions();
     const permissionsMapping: PermissionMapping[] = await getAllPermissionsMapping();

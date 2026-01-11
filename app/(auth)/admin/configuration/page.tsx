@@ -1,5 +1,5 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import {AccessControlList} from './(acl)/page';
+import AccessControlList from "./(acl)/page";
 import hasPermission from "@/hooks/use-permission-check";
 import { Permissions } from "@/components/constants/user-roles";
 

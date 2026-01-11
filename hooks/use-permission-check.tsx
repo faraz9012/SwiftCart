@@ -2,7 +2,7 @@ import { checkUserPermissions } from '@/lib/auth-actions/auth-action';
 import UnauthorizedPage from '@/components/shared/unauthorized';
 
 const hasPermission = (Component?: any, requiredPermissions?: any) => {
-  return async (props: any) => {
+  const WithPermission = async (props: any) => {
     let isUserPermitted = false;
     const userPermissions = (await checkUserPermissions()).map((permission: any) => permission.name);
 
@@ -21,6 +21,12 @@ const hasPermission = (Component?: any, requiredPermissions?: any) => {
 
     return <Component {...props} />;
   };
+
+  WithPermission.displayName = Component?.displayName
+    || Component?.name
+    || "WithPermission";
+
+  return WithPermission;
 };
 
 export default hasPermission;

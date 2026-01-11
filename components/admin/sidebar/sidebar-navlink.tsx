@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from "react";
+import { useMemo } from "react";
 import { usePathname } from "next/navigation";
 import { useMediaQuery } from "usehooks-ts";
 
@@ -21,14 +21,13 @@ export default function SideNavLink() {
   const isMobile = useMediaQuery("only screen and (max-width : 768px)");
   const { currentPermissions } = usePermissions();
   
-  const [filteredNav, setFilteredNav] = useState<SidebarNavigation[]>([]);
-
-  useEffect(() => {
-    const filteredNavigation = SIDEBAR_NAVIGATION.filter(item =>
-      item.permissions.every(permission => currentPermissions.includes(permission))
-    );
-    setFilteredNav(filteredNavigation);
-  }, [currentPermissions]);
+  const filteredNav = useMemo(
+    () =>
+      SIDEBAR_NAVIGATION.filter((item) =>
+        item.permissions.every((permission) => currentPermissions.includes(permission))
+      ),
+    [currentPermissions]
+  );
 
   return (
     <>

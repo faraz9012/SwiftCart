@@ -43,7 +43,7 @@ export function EditCategoryButton({ categoryToEdit }: { categoryToEdit: Categor
     populateCategoriesDropdown();
   }, []);
 
-  const form = useForm<z.infer<typeof formSchema>>({
+  const form = useForm<z.input<typeof formSchema>, undefined, z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       id: categoryToEdit.id,

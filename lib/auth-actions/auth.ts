@@ -27,7 +27,8 @@ export async function createAuthSession(userId: number | bigint) {
     const session = await lucia.createSession((userId).toString(), {}).catch(err => console.log("Error: " + err));
     if (!session) return null;
     const sessionCookie = lucia.createSessionCookie(session.id);
-    cookies().set(
+    const cookieStore = await cookies();
+    cookieStore.set(
         sessionCookie.name,
         sessionCookie.value,
         sessionCookie.attributes
@@ -35,7 +36,8 @@ export async function createAuthSession(userId: number | bigint) {
 }
 
 export async function verifyAuth() {
-    const sessionCookie = cookies().get(lucia.sessionCookieName);
+    const cookieStore = await cookies();
+    const sessionCookie = cookieStore.get(lucia.sessionCookieName);
 
     if (!sessionCookie) {
         return {
@@ -58,7 +60,7 @@ export async function verifyAuth() {
     try {
         if (result.session && result.session.fresh) {
             const sessionCookie = lucia.createSessionCookie(result.session.id);
-            cookies().set(
+            cookieStore.set(
                 sessionCookie.name,
                 sessionCookie.value,
                 sessionCookie.attributes
@@ -66,7 +68,7 @@ export async function verifyAuth() {
         }
         if (!result.session) {
             const sessionCookie = lucia.createBlankSessionCookie();
-            cookies().set(
+            cookieStore.set(
                 sessionCookie.name,
                 sessionCookie.value,
                 sessionCookie.attributes
@@ -85,7 +87,8 @@ export async function destroySession() {
     await lucia.invalidateSession(session.id);
 
     const sessionCookie = lucia.createBlankSessionCookie();
-    cookies().set(
+    const cookieStore = await cookies();
+    cookieStore.set(
         sessionCookie.name,
         sessionCookie.value,
         sessionCookie.attributes
