@@ -32,6 +32,9 @@ export async function Register({ firstName, lastName, email, password }: { first
         // set the registered role
         await updateUserRole(createResult.id, UserRoles.Registered)
 
+        if (!process.env.SESSION_SECRET) {
+            return { success: false, message: "SESSION_SECRET is not set." }
+        }
         await createAuthSession(createResult.id);
         return { success: true, message: "Registration successful!" }
     }
@@ -39,8 +42,11 @@ export async function Register({ firstName, lastName, email, password }: { first
         let errorMessage = "Uh-Oh! Something went wrong."
         if (error.code === 'SQLITE_CONSTRAINT_UNIQUE') {
             errorMessage = "It seems like an account with this email already exists.";
-            return { success: false, message: errorMessage }
         }
+        if (error?.message?.includes("SESSION_SECRET is not set")) {
+            errorMessage = "SESSION_SECRET is not set."
+        }
+        return { success: false, message: errorMessage }
     }
 }
 
@@ -58,11 +64,17 @@ export async function LoginUser({ email, password }: { email: string, password: 
             return { success: false, message: "Could not authenticate user, please check your credentials." }
         }
 
+        if (!process.env.SESSION_SECRET) {
+            return { success: false, message: "SESSION_SECRET is not set." }
+        }
         await createAuthSession(user.id);
         return { success: true, message: "Login successful!" }
     }
     catch (error: any) {
         let errorMessage = "Uh-Oh! Something went wrong."
+        if (error?.message?.includes("SESSION_SECRET is not set")) {
+            errorMessage = "SESSION_SECRET is not set."
+        }
         return { success: false, message: errorMessage }
     }
 }

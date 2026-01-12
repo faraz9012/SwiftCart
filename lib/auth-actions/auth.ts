@@ -19,7 +19,7 @@ const sessionOptions = {
 
 function assertSessionSecret() {
     if (!sessionOptions.password) {
-        throw new Error("SESSION_SECRET is not set.");
+        throw new Error("SESSION_SECRET is not set. Add it to .env.local and restart the server.");
     }
 }
 
