@@ -12,7 +12,7 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 import { Permission, PermissionMapping, UserRole } from "@/components/constants/user-roles";
 import { usePermissions } from "@/contexts/permissions-context";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { updateUserRolesServerAction } from "./action";
 
 interface AclGridProps {
@@ -22,12 +22,9 @@ interface AclGridProps {
 }
 
 export default function AclGrid({ currentUserRoles, allPermissions, permissionMapping }: AclGridProps) {
-    const [userRoles, setUserRoles] = useState<UserRole[]>([]);
-    const [permissions, setPermissions] = useState<Permission[]>([]);
-    const [selectedPermissions, setSelectedPermissions] = useState<{ [key: string]: Set<number> }>({});
-    const { updatePermissions } = usePermissions();
-
-    useEffect(() => {
+    const userRoles = currentUserRoles;
+    const permissions = allPermissions;
+    const [selectedPermissions, setSelectedPermissions] = useState<{ [key: string]: Set<number> }>(() => {
         const initialSelectedPermissions: { [key: string]: Set<number> } = {};
         permissionMapping.forEach((mapping: PermissionMapping) => {
             if (!initialSelectedPermissions[mapping.role_id]) {
@@ -35,10 +32,9 @@ export default function AclGrid({ currentUserRoles, allPermissions, permissionMa
             }
             initialSelectedPermissions[mapping.role_id].add(mapping.permission_id);
         });
-        setUserRoles(currentUserRoles);
-        setPermissions(allPermissions);
-        setSelectedPermissions(initialSelectedPermissions);
-    }, [currentUserRoles, allPermissions, permissionMapping]);
+        return initialSelectedPermissions;
+    });
+    const { updatePermissions } = usePermissions();
 
     const handleCheckboxChange = (roleId: number, permissionId: number, isChecked: boolean) => {
         setSelectedPermissions((prevSelected) => {

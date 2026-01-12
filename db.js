@@ -65,13 +65,14 @@ const dummyCategories = [
    }
 ];
 
+// Password for this user is admin@123
 const dummyUsers = [
    {
-      firstName: 'Faraz',
-      lastName: 'Arif',
-      email: `faraz.arif@paymytuition.com`,
+      firstName: 'Super',
+      lastName: 'Admin',
+      email: `admin@yourstore.com`,
       role: "Super Administrators",
-      passwordHash: '877e1b1eb3d32f69cbc014f51a7f623d777b03cc0983df0ab3d5daa1534f26761e6c0812f43a5ad458e9f401d9c13c7864ecef647b98af62928e0090101b4c4f:f263035d67a3f2831f285dbf5fe05bac',
+      passwordHash: '5d29bf929ebdea915096bc728851bc40f2f67a414aef0ae8aeaad7862a167a789a9eee4e7798f734614cb042d775e3165abb943c3e641be05006126df5f935db:f4ebc018aaf0834d2e129ae5c0f8bffa',
       isActive: 1,
       createdOnUTC: '2023-11-23 09:25:38.0000000',
    }
@@ -98,8 +99,8 @@ const UserRoles = [
 
 const UserRoleMapping = [
    {
-      userId: 1,
-      userRoleId: 1
+      userEmail: 'admin@yourstore.com',
+      roleSystemName: 'SuperAdmin'
    },
 ]
 
@@ -419,9 +420,14 @@ async function initUserRoleMappingData() {
    `;
 
    const stmt = db.prepare(sql);
+   const getUserIdByEmail = db.prepare('SELECT id FROM User WHERE email = ?');
+   const getRoleIdBySystemName = db.prepare('SELECT id FROM UserRole WHERE systemName = ?');
 
    for (const rm of UserRoleMapping) {
-      const data = [rm.userId, rm.userRoleId];
+      const user = getUserIdByEmail.get(rm.userEmail);
+      const role = getRoleIdBySystemName.get(rm.roleSystemName);
+      if (!user || !role) continue;
+      const data = [user.id, role.id];
       await stmt.run(data);
    }
 }

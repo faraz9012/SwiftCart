@@ -10,10 +10,10 @@ const db = sql('SwiftCart.db');
 export function createUser({ firstName, lastName, email, hashedPassword, customerCreatedTime }:
     { firstName: string, lastName: string, email: string, hashedPassword: string, customerCreatedTime: string }) {
     const result = db
-        .prepare(`INSERT INTO User (firstName, lastName, email, passwordHash, isActive, createdOnUTC, lastLoginOnUTC) VALUES (?,?,?,?, 1, ?, ?)`)
+        .prepare(`INSERT OR IGNORE INTO User (firstName, lastName, email, passwordHash, isActive, createdOnUTC, lastLoginOnUTC) VALUES (?,?,?,?, 1, ?, ?)`)
         .run(firstName, lastName, email.toLowerCase(), hashedPassword, customerCreatedTime, customerCreatedTime);
 
-    return result.lastInsertRowid;
+    return { id: result.lastInsertRowid, changes: result.changes };
 };
 
 export function updateUserRole(userId: number | bigint, roleId: number) {
@@ -22,6 +22,10 @@ export function updateUserRole(userId: number | bigint, roleId: number) {
 
 export function getUserByEmail(email: string) {
     return db.prepare('SELECT * FROM User WHERE email = ?').get(email)
+};
+
+export function getUserById(id: number | bigint) {
+    return db.prepare('SELECT * FROM User WHERE id = ?').get(id);
 };
 
 export function getPermissionsByUserId(id: number | bigint) {
@@ -33,6 +37,15 @@ export function getPermissionsByUserId(id: number | bigint) {
     INNER JOIN User u ON urm.user_id = u.id
     WHERE u.id = ?;
 
+    `).all(id)
+};
+
+export function getUserRolesByUserId(id: number | bigint) {
+    return db.prepare(`
+    SELECT ur.name, ur.systemName
+    FROM UserRole ur
+    INNER JOIN UserRoleMapping urm ON ur.id = urm.role_id
+    WHERE urm.user_id = ?;
     `).all(id)
 };
 

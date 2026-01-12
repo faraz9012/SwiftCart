@@ -4,12 +4,12 @@ import { Footer_Menu, Social_Links } from '../constants/main-footer';
 
 export default function MainFooter() {
     return <>
-        <footer className="relative bg-[#e2e8f0] pt-8 pb-6">
+        <footer className="relative bg-background pt-8 pb-6 text-foreground">
             <div className="container mx-auto px-4 max-w-7xl ">
                 <div className="flex flex-wrap text-left lg:text-left">
                     <div className="w-full lg:w-6/12 px-4">
                         <h4 className="text-3xl fonat-semibold">Let&apos;s keep in touch!</h4>
-                        <h5 className="text-lg mt-0 mb-2">
+                        <h5 className="text-lg mt-0 mb-2 text-muted-foreground">
                             Find us on any of these platforms, we respond 1-2 business days.
                         </h5>
                         <div className="mt-6 lg:mb-0 mb-6 ">
@@ -20,7 +20,7 @@ export default function MainFooter() {
                                             <Link
                                                 key={subIndex} 
                                                 href={link.route || '/'} 
-                                                className="bg-white shadow-lg font-normal h-10 w-10 flex items-center justify-center align-center rounded-full outline-none mr-2 group hover:text-indigo-600 group focus:outline-none focus:ring focus:ring-slate-700"
+                                                className="bg-card text-foreground shadow-lg font-normal h-10 w-10 flex items-center justify-center align-center rounded-full outline-none mr-2 group hover:bg-accent hover:text-accent-foreground focus:outline-none focus:ring focus:ring-ring"
                                             >
                                                 {link.icon && <link.icon className="size-5" />}
                                                 <span className="sr-only">{link.icon && link.title}</span>
@@ -42,7 +42,7 @@ export default function MainFooter() {
                                         {footerLink.subLinks && footerLink.subLinks.map((link, subIndex) => (
                                             <li key={subIndex}>
                                                 <Link
-                                                    className="text-gray-700 hover:text-indigo-600 font-medium block pb-2 text-sm w-fit"
+                                                    className="text-muted-foreground hover:text-foreground font-medium block pb-2 text-sm w-fit"
                                                     href={link.route || "/"}
                                                 >
                                                     {link.title}
@@ -55,11 +55,11 @@ export default function MainFooter() {
                         </div>
                     </div>
                 </div>
-                <hr className="my-6" />
+                <hr className="my-6 border-border" />
                 <div className="flex flex-wrap items-center md:justify-between justify-center">
                     <div className="w-full md:w-4/12 px-4 mx-auto text-center">
-                        <div className="text-sm font-semibold py-1">
-                            Copyright © 2024 SwiftCart</div>
+                        <div className="text-sm font-semibold py-1 text-muted-foreground">
+                            Copyright © 2026 SwiftCart</div>
                     </div>
                 </div>
             </div>

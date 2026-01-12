@@ -14,15 +14,15 @@ import Link from "next/link";
 import { LogoutUser } from "@/lib/auth-actions/auth-action";
 import { toast } from "sonner";
 
-async function signOut() {
-    const response = await LogoutUser();
-    if (response.success) {
-      toast.success(response.message);
+    async function signOut() {
+        const response = await LogoutUser();
+        if (response.success) {
+            toast.success(response.message);
+        }
+        else {
+            toast.error(response?.message || "Something went wrong while logging you out.");
+        }
     }
-    else {
-      toast.error(response?.message || "Something went wrong will logging you out.");
-    }
-  }
 
 export default function MainHeaderDropdownItems(
     { isAuthenticated } : { isAuthenticated : boolean }) {
@@ -52,8 +52,8 @@ export default function MainHeaderDropdownItems(
                 <Link href={isAuthenticated ? "/" : "/login"}>
                     <DropdownMenuItem onClick={isAuthenticated ? signOut : undefined}>
                         {isAuthenticated ? "Logout" : "Login"}
-                    </DropdownMenuItem>
-                </Link>
+                        </DropdownMenuItem>
+                    </Link>
                 <Link href="/">
               </Link>
             </DropdownMenuContent>

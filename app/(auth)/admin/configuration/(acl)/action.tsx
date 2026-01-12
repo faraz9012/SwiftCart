@@ -35,7 +35,7 @@ export async function updateUserRolesServerAction(selectedPermissionsArray: { ro
         const updatedPermissions = await checkUserPermissions();
 
         // Revalidate the path to ensure the UI updates
-        revalidateTag("allPermissionsMapping");
+        revalidateTag("allPermissionsMapping", "default");
 
         return { success: true, message: "Permissions updated successfully.",updatedPermissions};
     } catch (error) {

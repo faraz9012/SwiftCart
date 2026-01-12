@@ -2,6 +2,16 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
+### Environment setup
+
+Copy the example env file and set a strong secret for sessions:
+
+```bash
+copy .env.example .env
+```
+
+Set `SESSION_SECRET` to a long random string (at least 32 characters).
+
 First, run the development server:
 
 ```bash

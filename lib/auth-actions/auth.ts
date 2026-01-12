@@ -1,93 +1,79 @@
 import { cookies } from "next/headers";
+import { getIronSession } from "iron-session";
+import { getUserById } from "@/lib/user";
 
-import { Lucia, TimeSpan } from "lucia";
-import { BetterSqlite3Adapter } from "@lucia-auth/adapter-sqlite";
-import sqlite from "better-sqlite3";
+type SessionData = {
+    userId?: number;
+};
 
-const db = sqlite("SwiftCart.db");
-
-const adapter = new BetterSqlite3Adapter(db, {
-    user: "User",
-    session: "Session"
-});
-
-export const lucia = new Lucia(adapter, {
-    sessionCookie: {
-        expires: false,
-        attributes: {
-            secure: false ?? process.env.NODE_ENV === "production",
-            path: "/"
-        }
+const sessionOptions = {
+    password: process.env.SESSION_SECRET as string,
+    cookieName: "swiftcart_session",
+    cookieOptions: {
+        secure: process.env.NODE_ENV === "production",
+        httpOnly: true,
+        sameSite: "lax",
+        path: "/",
     },
-    sessionExpiresIn: new TimeSpan(1, "d"),
-    getUserAttributes: (attr) => attr,
-});
+};
+
+function assertSessionSecret() {
+    if (!sessionOptions.password) {
+        throw new Error("SESSION_SECRET is not set. Add it to .env.local and restart the server.");
+    }
+}
+
+async function getSession() {
+    assertSessionSecret();
+    const cookieStore = await cookies();
+    return getIronSession<SessionData>(cookieStore, sessionOptions);
+}
+
+async function getSessionIfConfigured() {
+    if (!sessionOptions.password) return null;
+    const cookieStore = await cookies();
+    return getIronSession<SessionData>(cookieStore, sessionOptions);
+}
 
 export async function createAuthSession(userId: number | bigint) {
-    const session = await lucia.createSession((userId).toString(), {}).catch(err => console.log("Error: " + err));
-    if (!session) return null;
-    const sessionCookie = lucia.createSessionCookie(session.id);
-    cookies().set(
-        sessionCookie.name,
-        sessionCookie.value,
-        sessionCookie.attributes
-    );
+    const session = await getSession();
+    session.userId = Number(userId);
+    await session.save();
+    return session;
 }
 
 export async function verifyAuth() {
-    const sessionCookie = cookies().get(lucia.sessionCookieName);
-
-    if (!sessionCookie) {
+    const session = await getSessionIfConfigured();
+    if (process.env.NODE_ENV !== "production") {
+        console.log("[verifyAuth] session", { hasSession: !!session, userId: session?.userId });
+    }
+    if (!session) {
+        return {
+            user: null,
+            session: null,
+        };
+    }
+    if (!session.userId) {
         return {
             user: null,
             session: null,
         };
     }
 
-    const sessionId = sessionCookie.value;
-    
-    if (!sessionId) {
-        return {
-            user: null,
-            session: null,
-        };
+    const user = getUserById(session.userId) as { id: number; email: string } | undefined;
+    if (!user) {
+        await session.destroy();
+        return { user: null, session: null };
     }
 
-    const result = await lucia.validateSession(sessionId);
-
-    try {
-        if (result.session && result.session.fresh) {
-            const sessionCookie = lucia.createSessionCookie(result.session.id);
-            cookies().set(
-                sessionCookie.name,
-                sessionCookie.value,
-                sessionCookie.attributes
-            );
-        }
-        if (!result.session) {
-            const sessionCookie = lucia.createBlankSessionCookie();
-            cookies().set(
-                sessionCookie.name,
-                sessionCookie.value,
-                sessionCookie.attributes
-            );
-        }
-    } catch { }
-
-    return result;
+    return {
+        user: { id: user.id, email: user.email },
+        session: { userId: session.userId },
+    };
 }
 
 export async function destroySession() {
-    const { session } = await verifyAuth();
-
-    if (!session) return "Unauthorized!";
-
-    await lucia.invalidateSession(session.id);
-
-    const sessionCookie = lucia.createBlankSessionCookie();
-    cookies().set(
-        sessionCookie.name,
-        sessionCookie.value,
-        sessionCookie.attributes
-    );
+    const session = await getSession();
+    if (!session.userId) return "Unauthorized!";
+    await session.destroy();
 }

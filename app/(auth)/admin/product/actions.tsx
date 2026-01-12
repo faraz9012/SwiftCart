@@ -8,7 +8,7 @@ export async function deleteProductsServerAction(id: number[]) {
     try {
         await bulkDeleteProductPictureMappingByProductId(id);
         await bulkDeleteProducts(id);
-        revalidateTag("allProducts");
+        revalidateTag("allProducts", "default");
 
         return { success: true, message: "Product(s) deleted" }
     } catch (error) {
@@ -22,7 +22,7 @@ export async function deleteProductByIdServerAction(id: number) {
     try {
         await deleteProductPictureMappingByProductId(id);
         await deleteProduct(id);
-        revalidateTag("allProducts");
+        revalidateTag("allProducts", "default");
 
         return { success: true, message: "Product(s) deleted" }
     } catch (error) {
