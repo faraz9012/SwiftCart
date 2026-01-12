@@ -99,8 +99,8 @@ const UserRoles = [
 
 const UserRoleMapping = [
    {
-      userId: 1,
-      userRoleId: 1
+      userEmail: 'admin@yourstore.com',
+      roleSystemName: 'SuperAdmin'
    },
 ]
 
@@ -420,9 +420,14 @@ async function initUserRoleMappingData() {
    `;
 
    const stmt = db.prepare(sql);
+   const getUserIdByEmail = db.prepare('SELECT id FROM User WHERE email = ?');
+   const getRoleIdBySystemName = db.prepare('SELECT id FROM UserRole WHERE systemName = ?');
 
    for (const rm of UserRoleMapping) {
-      const data = [rm.userId, rm.userRoleId];
+      const user = getUserIdByEmail.get(rm.userEmail);
+      const role = getRoleIdBySystemName.get(rm.roleSystemName);
+      if (!user || !role) continue;
+      const data = [user.id, role.id];
       await stmt.run(data);
    }
 }

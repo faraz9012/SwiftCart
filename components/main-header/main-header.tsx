@@ -1,6 +1,5 @@
 import Link from "next/link"
 import { Menu, Search } from "lucide-react"
-import Image from "next/image";
 
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -15,6 +14,10 @@ export default async function MainHeader() {
 
   const verifyAuthentication = await verifyAuth();
   const isAuth = verifyAuthentication.user != null && verifyAuthentication.session != null;
+
+  if (process.env.NODE_ENV !== "production") {
+    console.log("[MainHeader] auth", { user: verifyAuthentication.user, session: verifyAuthentication.session });
+  }
 
   return (
     <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6">
@@ -61,22 +64,7 @@ export default async function MainHeader() {
               href="/"
               className="flex items-center gap-2 text-lg font-semibold md:text-base"
             >
-              <Image
-                src="/images/logo-black.png"
-                alt="The swift cart logo black"
-                className="dark:hidden"
-                width={40}
-                height={56}
-                priority
-              />
-              <Image
-                src="/images/logo-white.png"
-                alt="The swift cart logo white"
-                className="hidden dark:block"
-                width={40}
-                height={56}
-                priority
-              />
+              <Logo />
               <p className="text-xl font-semibold">Swift Cart</p>
             </Link>
             <Link

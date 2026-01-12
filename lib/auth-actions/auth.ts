@@ -44,6 +44,9 @@ export async function createAuthSession(userId: number | bigint) {
 
 export async function verifyAuth() {
     const session = await getSessionIfConfigured();
+    if (process.env.NODE_ENV !== "production") {
+        console.log("[verifyAuth] session", { hasSession: !!session, userId: session?.userId });
+    }
     if (!session) {
         return {
             user: null,

@@ -10,12 +10,12 @@ import { Switch } from "@/components/ui/switch";
 import { FileUpload } from "@/components/shared/file-upload";
 import { Category } from "./columns";
 import { Check, ChevronsUpDown, Edit } from "lucide-react";
-import { editCategory, getAllCategories } from "./actions";
+import { editCategory } from "./actions";
 import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
-import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   id: z.number().min(1, { message: "Requested record not found." }),
@@ -27,21 +27,14 @@ const formSchema = z.object({
   published: z.boolean().default(false),
 });
 
-export function EditCategoryButton({ categoryToEdit }: { categoryToEdit: Category }) {
-  const [parentCategoryList, setParentCategoryList] = useState<Category[] | null>(null);
-
-  useEffect(() => {
-    async function populateCategoriesDropdown() {
-      try {
-        const categories: any = await getAllCategories();
-        setParentCategoryList(categories);
-      } catch (error: any) {
-        toast.error("Failed to fetch categories:", error);
-      }
-    }
-
-    populateCategoriesDropdown();
-  }, []);
+export function EditCategoryButton({
+  categoryToEdit,
+  categories,
+}: {
+  categoryToEdit: Category;
+  categories: Category[];
+}) {
+  const router = useRouter();
 
   const form = useForm<z.input<typeof formSchema>, undefined, z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -52,7 +45,7 @@ export function EditCategoryButton({ categoryToEdit }: { categoryToEdit: Categor
       desc: categoryToEdit.description,
       image: categoryToEdit.image,
       parentCategoryId: categoryToEdit.parentCategoryId,
-      published: categoryToEdit.published === 0 ? true : false,
+      published: categoryToEdit.published === 1,
     },
   });
 
@@ -65,20 +58,19 @@ export function EditCategoryButton({ categoryToEdit }: { categoryToEdit: Categor
     if (response) {
       if (response.success) {
         toast.success(response.message);
+        router.refresh();
       } else {
         toast.error(response?.message);
       }
     }
   }
 
-  if (!parentCategoryList) return <div>Loading...</div>;
-
   return (
     <Sheet>
       <SheetTrigger asChild onClick={resetFormValues}>
-        <div className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 px-3">
+        <Button variant="ghost" size="icon">
           <Edit className="size-4" />
-        </div>
+        </Button>
       </SheetTrigger>
       <SheetContent side="fullScreen">
         <SheetHeader>
@@ -129,7 +121,7 @@ export function EditCategoryButton({ categoryToEdit }: { categoryToEdit: Categor
                                 )}
                               >
                                 {field.value
-                                  ? parentCategoryList.find(
+                                  ? categories.find(
                                     (category) => category.id === field.value
                                   )?.name
                                   : "Select category"}
@@ -143,7 +135,7 @@ export function EditCategoryButton({ categoryToEdit }: { categoryToEdit: Categor
                               <CommandEmpty>No result(s) found.</CommandEmpty>
                               <CommandGroup>
                                 <CommandList>
-                                  {parentCategoryList.filter((item: Category) => item.parentCategoryId === 0).map((category: Category) => (
+                                  {categories.filter((item: Category) => item.parentCategoryId === 0).map((category: Category) => (
                                     <CommandItem
                                       value={(category.id).toString()}
                                       key={category.name}

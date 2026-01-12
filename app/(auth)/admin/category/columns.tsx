@@ -113,7 +113,9 @@ export const columns = (categories:any): ColumnDef<Category>[] => [
     header: "Actions",
     cell: ({ row }) => {
       return (
-        <RowActions row={row} />
+        <div className="flex justify-end">
+          <RowActions row={row} categories={categories} />
+        </div>
       )
     },
   },

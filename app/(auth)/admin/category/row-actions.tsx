@@ -13,10 +13,11 @@ import {
 import { MoreHorizontal, Trash } from "lucide-react";
 import { deleteCategoryById } from "./actions";
 import { toast } from "sonner";
-import {EditCategoryButton} from "./edit-category";
+import { EditCategoryButton } from "./edit-category";
+import type { Category } from "./columns";
 
-export function RowActions(rowData: any) {
-    const data = rowData.row.original;
+export function RowActions({ row, categories }: { row: any; categories: Category[] }) {
+    const data = row.original;
 
     return (
         <DropdownMenu>
@@ -26,15 +27,14 @@ export function RowActions(rowData: any) {
                     <MoreHorizontal className="size-4" />
                 </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="flex p-0 min-w-fit">
+            <DropdownMenuContent align="end" className="flex items-center gap-1 p-1 min-w-fit">
                 {/* Edit */}
                 <TooltipProvider>
                     <Tooltip>
-                        <TooltipTrigger>
-                            <div>
-                            <EditCategoryButton categoryToEdit={data} />
-
-                            </div>
+                        <TooltipTrigger asChild>
+                            <span className="inline-flex">
+                                <EditCategoryButton categoryToEdit={data} categories={categories} />
+                            </span>
                         </TooltipTrigger>
                         <TooltipContent>
                             Edit
@@ -44,9 +44,10 @@ export function RowActions(rowData: any) {
                 {/* Delete  */}
                 <TooltipProvider>
                     <Tooltip>
-                        <TooltipTrigger>
-                            <div
-                                className="inline-flex items-center justify-center whitespace-nowrap rounded-md text-sm font-medium ring-offset-background transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50 hover:bg-accent hover:text-accent-foreground h-9 px-3"
+                        <TooltipTrigger asChild>
+                            <Button
+                                variant="ghost"
+                                size="icon"
                                 onClick={async () => {
                                     await deleteCategoryById(data.id)
                                         .then((res) => {
@@ -55,9 +56,10 @@ export function RowActions(rowData: any) {
                                         .catch((err) => {
                                             toast.error(err.message)
                                         });
-                                }}>
+                                }}
+                            >
                                 <Trash className="size-4" />
-                            </div>
+                            </Button>
                         </TooltipTrigger>
                         <TooltipContent>Delete</TooltipContent>
                     </Tooltip>

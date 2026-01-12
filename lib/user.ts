@@ -40,6 +40,15 @@ export function getPermissionsByUserId(id: number | bigint) {
     `).all(id)
 };
 
+export function getUserRolesByUserId(id: number | bigint) {
+    return db.prepare(`
+    SELECT ur.name, ur.systemName
+    FROM UserRole ur
+    INNER JOIN UserRoleMapping urm ON ur.id = urm.role_id
+    WHERE urm.user_id = ?;
+    `).all(id)
+};
+
 export const getAllPermissions = nextCache(
     cache(async function getAllPermissions(): Promise<Permission[]> {
         const permissions =  db.prepare(`
